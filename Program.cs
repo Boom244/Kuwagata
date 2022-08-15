@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,8 +14,12 @@ namespace Kuwagata
     class Program
     {
        public static void Main(string[] args)
-        {   //Create an OSISReader object to give you verses from the requests you put in.
-            OSISReader osisReader = new OSISReader(@"C:\Users\bolum\source\repos\VerseScraper CSharp Edition\OSISBibles\kjv\verses.json");
+        {
+            //Get project directory
+            string projectDirectory = Directory.GetParent(Environment.CurrentDirectory).Parent.FullName;
+
+            //Create an OSISReader object to give you verses from the requests you put in.
+            OSISReader osisReader = new OSISReader(projectDirectory + @"\OSISBibles\kjv\verses.json");
             //Prompt the user for a verse.
             Console.WriteLine("Enter a verse...");
             string verseRequest = Console.ReadLine();
