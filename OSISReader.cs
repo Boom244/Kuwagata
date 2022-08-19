@@ -52,17 +52,54 @@ namespace Kuwagata
                     throw new CannotGetBibleIndexException("Error in getting bible reference. Could not parse book name.");
                 }
 
+                /**2022-08-18: As part of the effort to rework this entire function, we're going to be taking detours at the levels
+                 * in which they are required in order to cover all the bases, starting with the below.
+                **/
+
+                //If we are simply referencing an entire book
+                if(elements.Length == 1)
+                {
+                    int nextBook = BI.IncreaseBibleReference(returnNumber, AddSelectionOptions.Book);
+                    for(int a = returnNumber; a < nextBook; a++)
+                    { 
+                        if (verses.ContainsKey(a.ToString()))
+                        {
+                            returnList.Add(a);
+                        }
+                        else
+                        {
+                            a = BI.IncreaseBibleReference(a, AddSelectionOptions.Chapter);
+                        }
+                    }
+                    return returnList.ToArray(); //Cut off the program there to prevent headache.
+                }
+
                 //This is a little part I reworked because the first time I did this I made a planning error structurally
                 firstandPossSecond = elements[1].Split('-');
 
 
+
                 //and now this becomes that
-                chapterAndVerse = firstandPossSecond[0].Split(':'); // This is now left level 3 of the diagram
+                chapterAndVerse = firstandPossSecond[0].Split(':'); 
 
                 //So if we have something like "Genesis 2:4-3:7" as input, the above should contain {"2:4", "3:7"}
 
-                //And now, we take a little detour in case this is a cross-chapter reference:
                 returnNumber += Int32.Parse(chapterAndVerse[0]) * 1000; //Again, scheme.
+
+                //If there's just a chapter and no verse:
+                if (chapterAndVerse.Length == 1)
+                {
+                    int nextBook = BI.IncreaseBibleReference(returnNumber, AddSelectionOptions.Chapter);
+                    for (int a = returnNumber; a < nextBook; a++)
+                    {
+                        if (verses.ContainsKey(a.ToString()))
+                        {
+                            returnList.Add(a);
+                        }
+                    }
+                    return returnList.ToArray(); //Cut off the program there to prevent headache.
+                }
+
 
                 //Fourth is where the loop branches.
                 if (firstandPossSecond.Length >= 2) //If a second element exists, branch and get all the verses between the first and second number. 

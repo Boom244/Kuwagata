@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-/**In the interest of knowing what I'm doing when I come back to this project after a break of any length,
+/*In the interest of knowing what I'm doing when I come back to this project after a break of any length,
  * I have decided to litter this entire solution with extremely specific comments.
  */
 namespace Kuwagata
