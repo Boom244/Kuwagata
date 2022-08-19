@@ -35,23 +35,15 @@ namespace Kuwagata
             for(int i = 0; i < requests.Length; i++)
             {
                 /**TODO features:
-                 * Implement whole-chapter picking
                  * Implement cross-book picking (gonna need to implement a scan function in BibleIndexes so I can do this efficiently)
                  **/
 
                 //First, split the resulting string further by its spaces to get the book and chapter/verses. 
                 elements = requests[i].Split(' '); 
                 //Second, turn the first element of *that* resulting string into a number using BibleIndexes' GetBibleIndexFromArray.
-                try
-                {
-                    returnNumber = BI.GetBibleIndexFromArray(elements[0]) * 1000000; //x1000000 because that's the scheme the JSON uses.
-                }
-                catch
-                {
-                    //Like it? It's my own useless exception. At least I'll know where stuff is going wrong. 
-                    throw new CannotGetBibleIndexException("Error in getting bible reference. Could not parse book name.");
-                }
 
+                 returnNumber = BI.GetBibleIndexFromArray(elements[0]) * 1000000; //x1000000 because that's the scheme the JSON uses.
+                   
                 /**2022-08-18: As part of the effort to rework this entire function, we're going to be taking detours at the levels
                  * in which they are required in order to cover all the bases, starting with the below.
                 **/

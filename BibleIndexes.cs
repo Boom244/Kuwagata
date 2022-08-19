@@ -19,7 +19,7 @@ namespace Kuwagata
             return (currentReference - (currentReference % (int)option)) + (int)option;
         }
 
-        //btw all of this is ripped from Avendesora's pythonbible
+        //btw all of these regexes are ripped from Avendesora's pythonbible
         //avendesora if you end up seeing this pls no bully
         public string[] BibleRegexArray = {
             @"Gen\.*(?:esis)?",
@@ -91,11 +91,12 @@ namespace Kuwagata
         {
             for(int i = 0; i < BibleRegexArray.Length; i++)
             {
-                if (Regex.IsMatch(element, BibleRegexArray[i], RegexOptions.IgnoreCase)) {
+                if (Regex.IsMatch(element, BibleRegexArray[i], RegexOptions.IgnoreCase)) //This function is likely comp. expensive, but that's a problem for another day 
+                {
                     return i + 1; // Indexes start at 0, so we gotta pump up those numbers.
                 }
             }
-            return 1;
+            throw new CannotGetBibleIndexException("Cannot get bible index from name " + element);
         }
     }
 
