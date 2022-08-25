@@ -20,7 +20,7 @@ namespace Kuwagata
             BI = new BibleIndexes();
         }
 
-        public int[] GetReferencesFromString(string request)
+        public int[] GetReferencesFromString(string request, bool specialRecurse)
         {   
             //First, split the string by semicolons into individual requests;
             string[] requests = request.Split(';');
@@ -34,23 +34,23 @@ namespace Kuwagata
             int returnNumber = 0;
             for(int i = 0; i < requests.Length; i++)
             {
-                /**TODO features:
-                 * Implement cross-book picking (gonna need to implement a scan function in BibleIndexes so I can do this efficiently)
-                 **/
-
                 //First, split the resulting string further by its spaces to get the book and chapter/verses. 
                 elements = requests[i].Split(' '); 
                 //Second, turn the first element of *that* resulting string into a number using BibleIndexes' GetBibleIndexFromArray.
 
                  returnNumber = BI.GetBibleIndexFromArray(elements[0]) * 1000000; //x1000000 because that's the scheme the JSON uses.
                    
-                /**2022-08-18: As part of the effort to rework this entire function, we're going to be taking detours at the levels
-                 * in which they are required in order to cover all the bases, starting with the below.
-                **/
 
                 //If we are simply referencing an entire book
-                if(elements.Length == 1)
+                if(elements.Length == 1 && !requests[i].Contains("-"))
                 {
+                    //gotta check for the special condition (explained later)
+                    if (specialRecurse)
+                    {
+                        returnList.Add(returnNumber + 1001);
+                        return returnList.ToArray(); //simply return a starting point (or an end point)
+                    }
+
                     int nextBook = BI.IncreaseBibleReference(returnNumber, AddSelectionOptions.Book);
                     for(int a = returnNumber; a < nextBook; a++)
                     { 
@@ -66,6 +66,41 @@ namespace Kuwagata
                     return returnList.ToArray(); //Cut off the program there to prevent headache.
                 }
 
+                //Let's say, hypothetically, for the sake of the argument, we were referencing across two books with no verses specified;
+                string[] potentialCrossBookReference = requests[i].Split('-');
+                if (potentialCrossBookReference.Length > 1)
+                {
+                    if (BI.GetBibleIndexFromArray(potentialCrossBookReference[0]) != 0 && BI.GetBibleIndexFromArray(potentialCrossBookReference[1]) != 0)
+                    {
+                        int startPos = GetReferencesFromString(potentialCrossBookReference[0], true)[0];
+                        int endPos = GetReferencesFromString(potentialCrossBookReference[1], true)[0];
+
+                        for (int j = startPos; j < endPos; j++)
+                        {
+                            if (verses.ContainsKey(j.ToString()))
+                            {
+                                returnList.Add(j);
+                            }
+                            else
+                            {
+                                //prevent the program from processing more indexes than it needs to
+                                j = BI.IncreaseBibleReference(j, AddSelectionOptions.Chapter) + 1;
+                                if (verses.ContainsKey(j.ToString()) == false)
+                                {
+                                    j = BI.IncreaseBibleReference(j, AddSelectionOptions.Book);
+                                }
+                            }
+                        }
+                        returnList.Add(endPos);
+                        return returnList.ToArray(); //And that's a wrap, folks!
+                                                     //Remember when this function was clean and elegant? Me neither.
+                    }
+                }
+                
+
+
+
+
                 //This is a little part I reworked because the first time I did this I made a planning error structurally
                 firstandPossSecond = elements[1].Split('-');
 
@@ -74,9 +109,52 @@ namespace Kuwagata
                 //and now this becomes that
                 chapterAndVerse = firstandPossSecond[0].Split(':'); 
 
-                //So if we have something like "Genesis 2:4-3:7" as input, the above should contain {"2:4", "3:7"}
 
                 returnNumber += Int32.Parse(chapterAndVerse[0]) * 1000; //Again, scheme.
+
+
+
+                if (firstandPossSecond.Length > 1) // Gotta do this to prevent "index outta range"
+                {
+                    if (BI.GetBibleIndexFromArray(elements[0]) != 0 && BI.GetBibleIndexFromArray(firstandPossSecond[1]) != 0)
+                    //If this a cross-book reference, prepare to hurt
+                    {
+                        int startPos; //intentionally left vague for now
+                        int endPos;
+
+                        //Step 1, stitch back together the reference you had in the first book
+                        string startRef = elements[0] + " " + firstandPossSecond[0];
+                        //Step 2, Craft the second reference from the edges of requests[i]
+                        string endRef = requests[i].Remove(0, startRef.Length + 1);
+                        //Step 3, smack 'em both together and get the numerical references by running this function again
+                        int[] numRef = GetReferencesFromString(startRef + ";" + endRef, true); //Adding a special condition just for this
+
+                        //By all means this shouldn't happen but just in case it does
+                        startPos = numRef[0] < numRef[1] ? numRef[0] : numRef[1]; //if the end position is somehow smaller than the start, swap em around
+                        endPos = numRef[0] < numRef[1] ? numRef[1] : numRef[0]; //and so on
+
+                        for (int j = startPos; j < endPos; j++)
+                        {
+                            if (verses.ContainsKey(j.ToString()))
+                            {
+                                returnList.Add(j);
+                            }
+                            else
+                            {
+                                //prevent the program from processing more indexes than it needs to
+                                j = BI.IncreaseBibleReference(j, AddSelectionOptions.Chapter) + 1;
+                                if (verses.ContainsKey(j.ToString()) == false)
+                                {
+                                    j = BI.IncreaseBibleReference(j, AddSelectionOptions.Book);
+                                }
+                            }
+                        }
+                        returnList.Add(endPos);
+                        return returnList.ToArray(); //I really should stop with these and think of something better.
+
+                    }
+                }
+               
 
                 //If there's just a chapter and no verse:
                 if (chapterAndVerse.Length == 1)
@@ -107,10 +185,10 @@ namespace Kuwagata
                         // dudedudedude I got this
 
                         //Step 1, set the trap, now laced with direcursional-trisinglelineide-based ricin
-                        string startToken = GetReferencesFromString(elements[0] + " " + firstandPossSecond[0])[0].ToString();
+                        string startToken = GetReferencesFromString(elements[0] + " " + firstandPossSecond[0], false)[0].ToString();
 
                         //Step 2, hatch a terrible idea
-                        string endToken = GetReferencesFromString(elements[0] + " " + firstandPossSecond[1])[0].ToString();
+                        string endToken = GetReferencesFromString(elements[0] + " " + firstandPossSecond[1], false)[0].ToString();
 
                         //Step 3, cross your fingers and hope it works
                         //I really didn't want to have to do this, but it will be what this is for a lack of a better solution.

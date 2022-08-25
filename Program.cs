@@ -23,7 +23,7 @@ namespace Kuwagata
             //Prompt the user for a verse.
             Console.WriteLine("Enter a verse...");
             string verseRequest = Console.ReadLine();
-            int[] verseIds = osisReader.GetReferencesFromString(verseRequest);
+            int[] verseIds = osisReader.GetReferencesFromString(verseRequest, false);
             string[] verses = osisReader.GetVersesFromReferences(verseIds);
             foreach(string j in verses)
             {

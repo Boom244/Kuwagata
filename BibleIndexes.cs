@@ -96,25 +96,12 @@ namespace Kuwagata
                     return i + 1; // Indexes start at 0, so we gotta pump up those numbers.
                 }
             }
-            throw new CannotGetBibleIndexException("Cannot get bible index from name " + element);
+            return 0;
         }
     }
 
   
 
-    public class CannotGetBibleIndexException : Exception
-    {
-        public CannotGetBibleIndexException()
-        {
-
-        }
-
-        public CannotGetBibleIndexException(string message)
-        : base(message)
-        {
-
-        }
-    }
 
     public enum AddSelectionOptions : int
     {
