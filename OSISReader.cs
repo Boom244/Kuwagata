@@ -20,6 +20,12 @@ namespace Kuwagata
             BI = new BibleIndexes();
         }
 
+        //Okay so since I keep seeing a bunch of similar code in GetReferencesFromString I'ma keep this function DRY
+        private int[] GetVersesBetweenMarkers(int startMarker, int endMarker, AddSelectionOptions skipOption)
+        {
+           
+        }
+
         public int[] GetReferencesFromString(string request, bool specialRecurse)
         {   
             //First, split the string by semicolons into individual requests;
@@ -50,7 +56,7 @@ namespace Kuwagata
                 }
 
                 //If we are simply referencing an entire book
-                if(elements.Length == 1 && !requests[i].Contains("-"))
+                if(((elements.Length == 1) || (elements.Length == 2 && multiWordBook)) && !requests[i].Contains("-"))
                 {
                     //gotta check for the special condition (explained later)
                     if (specialRecurse)
@@ -124,8 +130,9 @@ namespace Kuwagata
 
                 if (firstandPossSecond.Length > 1) // Gotta do this to prevent "index outta range"
                 {
-                    if (BI.GetBibleIndexFromArray(elements[0]) != 0 && BI.GetBibleIndexFromArray(firstandPossSecond[1]) != 0)
-                    //If this a cross-book reference, prepare to hurt
+                    if ((BI.GetBibleIndexFromArray(elements[0]) != 0 && BI.GetBibleIndexFromArray(firstandPossSecond[1]) != 0)
+                        || (multiWordBook && BI.GetBibleIndexFromArray(elements[0] + " " + elements[1]) != 0 && BI.GetBibleIndexFromArray(firstandPossSecond[1]) != 0))
+                            //literally just rewriting the conditions is making me wanna commit toaster bath
                     {
                         int startPos; //intentionally left vague for now
                         int endPos;
@@ -193,10 +200,10 @@ namespace Kuwagata
                         // dudedudedude I got this
 
                         //Step 1, set the trap, now laced with direcursional-trisinglelineide-based ricin
-                        string startToken = GetReferencesFromString(elements[0] + " " + firstandPossSecond[0], false)[0].ToString();
+                        string startToken = GetReferencesFromString((multiWordBook ? elements[0] + " " + elements[1] : elements[0]) + " " + firstandPossSecond[0], false)[0].ToString();
 
                         //Step 2, hatch a terrible idea
-                        string endToken = GetReferencesFromString(elements[0] + " " + firstandPossSecond[1], false)[0].ToString();
+                        string endToken = GetReferencesFromString((multiWordBook ? elements[0] + " " + elements[1] : elements[0]) + " " + firstandPossSecond[1], false)[0].ToString();
 
                         //Step 3, cross your fingers and hope it works
                         //I really didn't want to have to do this, but it will be what this is for a lack of a better solution.
