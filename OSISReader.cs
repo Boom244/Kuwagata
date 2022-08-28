@@ -32,14 +32,22 @@ namespace Kuwagata
             string[] chapterAndVerse;
             string[] firstandPossSecond;
             int returnNumber = 0;
+            bool multiWordBook = false;
             for(int i = 0; i < requests.Length; i++)
             {
                 //First, split the resulting string further by its spaces to get the book and chapter/verses. 
                 elements = requests[i].Split(' '); 
                 //Second, turn the first element of *that* resulting string into a number using BibleIndexes' GetBibleIndexFromArray.
+                
 
-                 returnNumber = BI.GetBibleIndexFromArray(elements[0]) * 1000000; //x1000000 because that's the scheme the JSON uses.
-                   
+               returnNumber = BI.GetBibleIndexFromArray(elements[0]) * 1000000; //x1000000 because that's the scheme the JSON uses.
+
+                //ok so I forgor that books like 2 Corinthians exist so here's what we're gonna do
+                if (returnNumber == 0)
+                {
+                    returnNumber = BI.GetBibleIndexFromArray(elements[0] + " " + elements[1]) * 1000000;
+                    multiWordBook = true; //flag the next subscript to shift down one element
+                }
 
                 //If we are simply referencing an entire book
                 if(elements.Length == 1 && !requests[i].Contains("-"))
@@ -102,7 +110,7 @@ namespace Kuwagata
 
 
                 //This is a little part I reworked because the first time I did this I made a planning error structurally
-                firstandPossSecond = elements[1].Split('-');
+                firstandPossSecond = multiWordBook ? elements[2].Split('-') : elements[1].Split('-'); //ternary operator 
 
 
 
