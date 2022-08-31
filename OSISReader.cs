@@ -21,9 +21,35 @@ namespace Kuwagata
         }
 
         //Okay so since I keep seeing a bunch of similar code in GetReferencesFromString I'ma keep this function DRY
-        private int[] GetVersesBetweenMarkers(int startMarker, int endMarker, AddSelectionOptions skipOption)
+        private int[] GetVersesBetweenMarkers(int startMarker, int endMarker, AddSelectionOptions skipOption, bool escalate)
         {
-           
+            List<int> returnList = new List<int>();
+            if (verses.ContainsKey(startMarker.ToString()))
+            {
+                returnList.Add(startMarker);
+            }
+            for (int j = startMarker; j < endMarker; j++)
+            {
+                if (verses.ContainsKey(j.ToString()))
+                {
+                    returnList.Add(j);
+                }
+                else
+                {
+                    //prevent the program from processing more indexes than it needs to
+                    j = BI.IncreaseBibleReference(j, skipOption) + 1;
+                    if (verses.ContainsKey(j.ToString()) == false && escalate)
+                    {
+                        j = BI.IncreaseBibleReference(j, AddSelectionOptions.Book);
+                    }
+                    if (verses.ContainsKey(j.ToString()))
+                    {
+                        returnList.Add(j);
+                    }
+                    
+                }
+            }
+            return returnList.ToArray(); //I might be a little rarted but this makes me less rarted
         }
 
         public int[] GetReferencesFromString(string request, bool specialRecurse)
@@ -66,18 +92,7 @@ namespace Kuwagata
                     }
 
                     int nextBook = BI.IncreaseBibleReference(returnNumber, AddSelectionOptions.Book);
-                    for(int a = returnNumber; a < nextBook; a++)
-                    { 
-                        if (verses.ContainsKey(a.ToString()))
-                        {
-                            returnList.Add(a);
-                        }
-                        else
-                        {
-                            a = BI.IncreaseBibleReference(a, AddSelectionOptions.Chapter);
-                        }
-                    }
-                    return returnList.ToArray(); //Cut off the program there to prevent headache.
+                    return GetVersesBetweenMarkers(returnNumber, nextBook, AddSelectionOptions.Chapter, false); //Cut off the program there to prevent headache.
                 }
 
                 //Let's say, hypothetically, for the sake of the argument, we were referencing across two books with no verses specified;

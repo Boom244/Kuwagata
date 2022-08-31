@@ -82,6 +82,7 @@ namespace Kuwagata
             @"Heb\.*(?:rews)?",
             @"Ja(?:me)?s\.*",
             @"1 (Pe\.*(?:t\.*(?:er)?)?|Pt\.*)",
+            @"2 (Pe\.*(?:t\.*(?:er)?)?|Pt\.*)",
             @"1 (John|Joh\.*|Jhn\.*|Jo\.*|Jn\.*)",
             @"2 (John|Joh\.*|Jhn\.*|Jo\.*|Jn\.*)",
             @"3 (John|Joh\.*|Jhn\.*|Jo\.*|Jn\.*)",
