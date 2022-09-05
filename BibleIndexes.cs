@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
 namespace Kuwagata
@@ -88,6 +89,77 @@ namespace Kuwagata
             @"3 (John|Joh\.*|Jhn\.*|Jo\.*|Jn\.*)",
             @"Jud\.*(:?e)?",
             @"Rev\.*(?:elation)?" };
+
+        public string[] BiblePlainArray = {
+                "Genesis",
+                "Exodus",
+                "Leviticus",
+                "Numbers",
+                "Deuteronomy",
+                "Joshua",
+                "Judges",
+                "Ruth",
+                "1 Samuel",
+                "2 Samuel",
+                "1 Kings",
+                "2 Kings",
+                "1 Chronicles",
+                "2 Chronicles",
+                "Ezra",
+                "Nehemiah",
+                "Esther",
+                "Job",
+                "Psalm",
+                "Proverbs",
+                "Ecclesiastes",
+                "Song of Solomon",
+                "Isaiah",
+                "Jeremiah",
+                "Lamentations",
+                "Ezekiel",
+                "Daniel",
+                "Hosea",
+                "Joel",
+                "Amos",
+                "Obadiah",
+                "Jonah",
+                "Micah",
+                "Nahum",
+                "Habakkuk",
+                "Zephaniah",
+                "Haggai",
+                "Zechariah",
+                "Malachi",
+                "Matthew",
+                "Mark",
+                "Luke",
+                "John",
+                "Acts",
+                "Romans",
+                "1 Corinthians",
+                "2 Corinthians",
+                "Galatians",
+                "Ephesians",
+                "Philippians",
+                "Colossians",
+                "1 Thessalonians",
+                "2 Thessalonians",
+                "1 Timothy",
+                "2 Timothy",
+                "Titus",
+                "Philemon",
+                "Hebrews",
+                "James",
+                "1 Peter",
+                "2 Peter",
+                "1 John",
+                "2 John",
+                "3 John",
+                "Jude",
+                "Revelation"
+        };
+
+
         public int GetBibleIndexFromArray(string element)
         {
             for(int i = 0; i < BibleRegexArray.Length; i++)
@@ -99,7 +171,37 @@ namespace Kuwagata
             }
             return 0;
         }
+
+        public string[] batchDecodeAllReferences(int[] references)
+        {
+            List<string> returnList = new List<string>();
+
+            foreach (int reference in references)
+            {
+                //Discern the book.
+                double preBookIdentifier = reference / 1000000;
+                double bookIdentifier = Math.Floor(preBookIdentifier);
+                string Book = BiblePlainArray[(int)bookIdentifier];
+
+                //Discern the chapter.
+                string ChapterIdentifier = Math.Floor((reference - (bookIdentifier * 1000000)) / 1000).ToString();
+
+                //Discern the verse.
+                string VerseIdentifier = (reference - ((bookIdentifier * 1000000) + (Int32.Parse(ChapterIdentifier) * 1000))).ToString();
+
+                //Lastly, smack 'em all together to get something a human can reliably reference.
+                string finalAddition = Book + " " + ChapterIdentifier + ":" + VerseIdentifier;
+
+                returnList.Add(finalAddition);
+                
+            }
+
+            return returnList.ToArray();
+        }
+
     }
+
+   
 
   
 

@@ -15,6 +15,7 @@ namespace Kuwagata
         public OSISReader(string OSISpath)
         {
             OSISPath = OSISpath;
+            Version = Directory.GetParent(OSISPath).ToString().ToUpper();
             string JSONText = File.ReadAllText(OSISPath);
             verses = (JObject)JsonConvert.DeserializeObject(JSONText);
             BI = new BibleIndexes();
@@ -24,10 +25,17 @@ namespace Kuwagata
         private int[] GetVersesBetweenMarkers(int startMarker, int endMarker, AddSelectionOptions skipOption, bool escalate)
         {
             List<int> returnList = new List<int>();
-            if (verses.ContainsKey(startMarker.ToString()))
+           
+
+            //ok so I realized people are beyond idiotic (including myself) so I'm going to do this
+           if (startMarker > endMarker)
             {
-                returnList.Add(startMarker);
+                //I don't wanna use a temp so I'm just going to carbon-copy this programming interview question
+                startMarker += endMarker;
+                endMarker = startMarker - endMarker;
+                startMarker -=  endMarker;
             }
+
             for (int j = startMarker; j < endMarker; j++)
             {
                 if (verses.ContainsKey(j.ToString()))
@@ -74,7 +82,7 @@ namespace Kuwagata
 
                returnNumber = BI.GetBibleIndexFromArray(elements[0]) * 1000000; //x1000000 because that's the scheme the JSON uses.
 
-                //ok so I forgor that books like 2 Corinthians exist so here's what we're gonna do
+                //ok so I forgor initially that books like 2 Corinthians and 1 John exist so here's what we're gonna do
                 if (returnNumber == 0)
                 {
                     returnNumber = BI.GetBibleIndexFromArray(elements[0] + " " + elements[1]) * 1000000;
@@ -104,23 +112,8 @@ namespace Kuwagata
                         int startPos = GetReferencesFromString(potentialCrossBookReference[0], true)[0];
                         int endPos = GetReferencesFromString(potentialCrossBookReference[1], true)[0];
 
-                        for (int j = startPos; j < endPos; j++)
-                        {
-                            if (verses.ContainsKey(j.ToString()))
-                            {
-                                returnList.Add(j);
-                            }
-                            else
-                            {
-                                //prevent the program from processing more indexes than it needs to
-                                j = BI.IncreaseBibleReference(j, AddSelectionOptions.Chapter) + 1;
-                                if (verses.ContainsKey(j.ToString()) == false)
-                                {
-                                    j = BI.IncreaseBibleReference(j, AddSelectionOptions.Book);
-                                }
-                            }
-                        }
-                        returnList.Add(endPos);
+                        returnList = GetVersesBetweenMarkers(startPos, endPos, AddSelectionOptions.Chapter, true).ToList();
+
                         return returnList.ToArray(); //And that's a wrap, folks!
                                                      //Remember when this function was clean and elegant? Me neither.
                     }
@@ -147,7 +140,6 @@ namespace Kuwagata
                 {
                     if ((BI.GetBibleIndexFromArray(elements[0]) != 0 && BI.GetBibleIndexFromArray(firstandPossSecond[1]) != 0)
                         || (multiWordBook && BI.GetBibleIndexFromArray(elements[0] + " " + elements[1]) != 0 && BI.GetBibleIndexFromArray(firstandPossSecond[1]) != 0))
-                            //literally just rewriting the conditions is making me wanna commit toaster bath
                     {
                         int startPos; //intentionally left vague for now
                         int endPos;
@@ -275,6 +267,7 @@ namespace Kuwagata
 
         public string OSISPath { get; set; }
         public JObject verses;
+        public string Version;
         public BibleIndexes BI;
     }
 }
