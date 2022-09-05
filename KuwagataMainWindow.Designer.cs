@@ -133,6 +133,7 @@ namespace VerseScraper_CSharp_Edition
             this.Controls.Add(this.VerseTextBox);
             this.Controls.Add(this.VerseLabel);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.KeyPreview = true;
             this.MaximumSize = new System.Drawing.Size(400, 400);
             this.MinimumSize = new System.Drawing.Size(400, 400);
             this.Name = "KuwagataMainWindow";

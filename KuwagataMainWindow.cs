@@ -18,11 +18,30 @@ namespace VerseScraper_CSharp_Edition
         public KuwagataMainWindow()
         {
             InitializeComponent();
+            this.KeyUp += KuwagataMainWindow_OnKeyUp;
         }
 
         private void KuwagataMainWindow_Load(object sender, EventArgs e)
         {
-
+            
+        }
+        
+        private void KuwagataMainWindow_OnKeyUp(object sender, KeyEventArgs e)
+        {
+            switch (e.KeyCode)
+            {
+                case Keys.Left:
+                    Kuwagata.Program.TransformQueue(false);
+                    break;
+                case Keys.Right:
+                    Kuwagata.Program.TransformQueue(true);
+                    break;
+                case Keys.Enter:
+                    string Verse = VerseTextBox.Text;
+                    string Version = VersionTextBox.Text;
+                    Kuwagata.Program.StartNewRequest(Verse, Version);
+                    break;
+            }
         }
 
         private void label2_Click(object sender, EventArgs e)

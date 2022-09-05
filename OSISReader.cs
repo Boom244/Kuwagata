@@ -15,7 +15,7 @@ namespace Kuwagata
         public OSISReader(string OSISpath)
         {
             OSISPath = OSISpath;
-            Version = Directory.GetParent(OSISPath).ToString().ToUpper();
+            Version = Directory.GetParent(OSISPath).Name.ToString().ToUpper();
             string JSONText = File.ReadAllText(OSISPath);
             verses = (JObject)JsonConvert.DeserializeObject(JSONText);
             BI = new BibleIndexes();
@@ -58,6 +58,34 @@ namespace Kuwagata
                 }
             }
             return returnList.ToArray(); //I might be a little rarted but this makes me less rarted
+        }
+
+        //Reference decoder.
+        public string[] batchDecodeAllReferences(int[] references)
+        {
+            List<string> returnList = new List<string>();
+
+            foreach (int reference in references)
+            {
+                //Discern the book.
+                double preBookIdentifier = reference / 1000000;
+                double bookIdentifier = Math.Floor(preBookIdentifier);
+                string Book = BI.BiblePlainArray[(int)bookIdentifier - 1];
+
+                //Discern the chapter.
+                string ChapterIdentifier = Math.Floor((reference - (bookIdentifier * 1000000)) / 1000).ToString();
+
+                //Discern the verse.
+                string VerseIdentifier = (reference - ((bookIdentifier * 1000000) + (Int32.Parse(ChapterIdentifier) * 1000))).ToString();
+
+                //Lastly, smack 'em all together to get something a human can reliably reference.
+                string finalAddition = Book + " " + ChapterIdentifier + ":" + VerseIdentifier;
+
+                returnList.Add(finalAddition);
+
+            }
+
+            return returnList.ToArray();
         }
 
         public int[] GetReferencesFromString(string request, bool specialRecurse)

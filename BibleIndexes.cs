@@ -90,6 +90,7 @@ namespace Kuwagata
             @"Jud\.*(:?e)?",
             @"Rev\.*(?:elation)?" };
 
+        //Plain array for decoding use.
         public string[] BiblePlainArray = {
                 "Genesis",
                 "Exodus",
@@ -158,7 +159,8 @@ namespace Kuwagata
                 "Jude",
                 "Revelation"
         };
-
+         //Secret tool for later:       Obadiah,  3 John,   2 John,   Philemon, Jude
+        public int[] OneChapterBooks = {31000000, 64000000, 63000000, 57000000, 65000000};
 
         public int GetBibleIndexFromArray(string element)
         {
@@ -172,32 +174,7 @@ namespace Kuwagata
             return 0;
         }
 
-        public string[] batchDecodeAllReferences(int[] references)
-        {
-            List<string> returnList = new List<string>();
 
-            foreach (int reference in references)
-            {
-                //Discern the book.
-                double preBookIdentifier = reference / 1000000;
-                double bookIdentifier = Math.Floor(preBookIdentifier);
-                string Book = BiblePlainArray[(int)bookIdentifier];
-
-                //Discern the chapter.
-                string ChapterIdentifier = Math.Floor((reference - (bookIdentifier * 1000000)) / 1000).ToString();
-
-                //Discern the verse.
-                string VerseIdentifier = (reference - ((bookIdentifier * 1000000) + (Int32.Parse(ChapterIdentifier) * 1000))).ToString();
-
-                //Lastly, smack 'em all together to get something a human can reliably reference.
-                string finalAddition = Book + " " + ChapterIdentifier + ":" + VerseIdentifier;
-
-                returnList.Add(finalAddition);
-                
-            }
-
-            return returnList.ToArray();
-        }
 
     }
 
