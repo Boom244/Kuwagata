@@ -12,6 +12,7 @@
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -22,9 +23,8 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>0</ApplicationRevision>
-    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <ApplicationRevision>1</ApplicationRevision>
+    <ApplicationVersion>0.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
@@ -36,7 +36,7 @@
     <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
+    <WarningLevel>1</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -48,8 +48,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>
-    </ApplicationIcon>
+    <ApplicationIcon>KuwaUpscale.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject />
@@ -72,11 +71,19 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BibleIndexes.cs" />
+    <Compile Include="ConfigValues.cs" />
+    <Compile Include="IniFile.cs" />
     <Compile Include="KuwagataMainWindow.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="KuwagataMainWindow.Designer.cs">
       <DependentUpon>KuwagataMainWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="KuwagataSettings.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="KuwagataSettings.Designer.cs">
+      <DependentUpon>KuwagataSettings.cs</DependentUpon>
     </Compile>
     <Compile Include="OSISReader.cs" />
     <Compile Include="Program.cs" />
@@ -92,9 +99,13 @@
     <EmbeddedResource Include="KuwagataMainWindow.resx">
       <DependentUpon>KuwagataMainWindow.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="KuwagataSettings.resx">
+      <DependentUpon>KuwagataSettings.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Content Include="KuwagataLogo.ico" />
+    <Content Include="KuwaUpscale.ico" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.7.2">

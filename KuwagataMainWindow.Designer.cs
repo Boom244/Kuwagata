@@ -1,5 +1,5 @@
 ﻿
-namespace VerseScraper_CSharp_Edition
+namespace Kuwagata
 {
     partial class KuwagataMainWindow
     {
@@ -39,6 +39,7 @@ namespace VerseScraper_CSharp_Edition
             this.Retrieve = new System.Windows.Forms.Button();
             this.SeekForward = new System.Windows.Forms.Button();
             this.SeekBack = new System.Windows.Forms.Button();
+            this.Settings = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // label1
@@ -68,7 +69,6 @@ namespace VerseScraper_CSharp_Edition
             this.VerseTextBox.TabIndex = 1;
             this.VerseTextBox.Text = "Genesis 1:1";
             this.VerseTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.VerseTextBox.TextChanged += new System.EventHandler(this.VerseTextBox_TextChanged);
             // 
             // VersionTextBox
             // 
@@ -120,11 +120,22 @@ namespace VerseScraper_CSharp_Edition
             this.SeekBack.UseVisualStyleBackColor = true;
             this.SeekBack.Click += new System.EventHandler(this.SeekBack_Click);
             // 
+            // Settings
+            // 
+            this.Settings.Location = new System.Drawing.Point(254, 307);
+            this.Settings.Name = "Settings";
+            this.Settings.Size = new System.Drawing.Size(116, 34);
+            this.Settings.TabIndex = 7;
+            this.Settings.Text = "Settings";
+            this.Settings.UseVisualStyleBackColor = true;
+            this.Settings.Click += new System.EventHandler(this.Settings_Click);
+            // 
             // KuwagataMainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(382, 353);
+            this.Controls.Add(this.Settings);
             this.Controls.Add(this.SeekBack);
             this.Controls.Add(this.SeekForward);
             this.Controls.Add(this.Retrieve);
@@ -155,5 +166,6 @@ namespace VerseScraper_CSharp_Edition
         private System.Windows.Forms.Button Retrieve;
         private System.Windows.Forms.Button SeekForward;
         private System.Windows.Forms.Button SeekBack;
+        private System.Windows.Forms.Button Settings;
     }
 }

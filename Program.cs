@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using VerseScraper_CSharp_Edition;
 using System.Windows.Forms;
 /*In the interest of knowing what I'm doing when I come back to this project after a break of any length,
 * I have decided to litter this entire solution with extremely specific comments.
@@ -16,6 +15,7 @@ namespace Kuwagata
 
         //I get the strange feeling I'm doing something wrong here....
         public static OSISReader osisReader;
+        public static ConfigValues cv;
         public static string[] verses;
         public static string[] plainVerseReferences;
         public static string verseOutput = @"C:\Users\bolum\Desktop\VerseScraper\VerseToDisplay.txt";
@@ -26,13 +26,17 @@ namespace Kuwagata
             Directory.GetParent(Environment.CurrentDirectory).Parent.FullName;
         //Must be the wind.
 
+        [STAThread] //prevent C# from freaking out when I open a dialog
         public static void Main(string[] args)
         {
-            //Get project directory
-           
+            //Initialize all configuration values
+            cv = new ConfigValues();
+            cv.LoadAllConfigs();
 
             //Create an OSISReader object to give you verses from the requests you put in.
-            osisReader = new OSISReader(projectDirectory + @"\OSISBibles\kjv\verses.json");
+            osisReader = new OSISReader(cv.ExecDirectory + @"\OSISBibles\kjv\verses.json");
+
+            //Finally, run the main window.
             Application.Run(new KuwagataMainWindow());
             Application.EnableVisualStyles(); //For use of CTRL-A, CTRL-X, etc....
             
@@ -43,11 +47,11 @@ namespace Kuwagata
         {
             //Reset the current index
             currentIndex = 0;
-
+            
             //If the version is different than the preload, swap over.
             if (Version != osisReader.Version)
             {
-                osisReader = new OSISReader(projectDirectory + @"\OSISBibles\" + Version.ToLower() + @"\verses.json"); ;
+                osisReader = new OSISReader(cv.ExecDirectory + @"\OSISBibles\" + Version.ToLower() + @"\verses.json"); ;
             }
 
             //Give the user their verses.

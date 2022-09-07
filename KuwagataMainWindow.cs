@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 
 
-namespace VerseScraper_CSharp_Edition
+namespace Kuwagata
 {
     public  partial class KuwagataMainWindow : Form
     {
@@ -66,9 +66,28 @@ namespace VerseScraper_CSharp_Edition
             Kuwagata.Program.TransformQueue(false);
         }
 
-        private void VerseTextBox_TextChanged(object sender, EventArgs e)
+        private void VerseTextBox_KeyDown(object sender, KeyEventArgs e)
         {
+            if (e.Control && e.KeyCode == Keys.A)
+            {
+                if (sender != null)
+                    ((TextBox)sender).SelectAll();
+            }
+        }
 
+        private void VersionTextBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Control && e.KeyCode == Keys.A)
+            {
+                if (sender != null)
+                    ((TextBox)sender).SelectAll();
+            }
+        }
+
+        private void Settings_Click(object sender, EventArgs e)
+        {
+            KuwagataSettings ks = new KuwagataSettings();
+            ks.Show();
         }
     }
 }
