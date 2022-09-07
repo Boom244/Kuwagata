@@ -26,7 +26,7 @@ namespace Kuwagata
             Directory.GetParent(Environment.CurrentDirectory).Parent.FullName;
         //Must be the wind.
 
-        [STAThread] //prevent C# from freaking out when I open a dialog
+        [STAThread] //prevent C# from freaking out when I open a file dialog
         public static void Main(string[] args)
         {
             //Initialize all configuration values

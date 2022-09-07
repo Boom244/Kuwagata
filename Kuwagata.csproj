@@ -104,7 +104,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="KuwagataLogo.ico" />
     <Content Include="KuwaUpscale.ico" />
   </ItemGroup>
   <ItemGroup>

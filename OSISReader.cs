@@ -242,7 +242,7 @@ namespace Kuwagata
 
                         //Step 3, cross your fingers and hope it works
                         //I really didn't want to have to do this, but it will be what this is for a lack of a better solution.
-                        for (int m = Int32.Parse(startToken); m < Int32.Parse(endToken)+1; m++)
+                        for (int m = Int32.Parse(startToken); m < Int32.Parse(endToken) + 1; m++)
                         {
                             if (verses.ContainsKey(m.ToString()))
                             {
@@ -251,18 +251,27 @@ namespace Kuwagata
                             else
                             {
                                 //prevent the program from processing more indexes than it needs to
-                                m = BI.IncreaseBibleReference(m, AddSelectionOptions.Chapter); 
+                                m = BI.IncreaseBibleReference(m, AddSelectionOptions.Chapter);
                             }
                         }
-                        
+
 
 
                     }
                     else //if the user (probably me) decides to spare my sanity
                     {
-                        for (int k = Int32.Parse(firstandPossSecond[0]); k < Int32.Parse(firstandPossSecond[1]) + 1; k++) //Loop through the resulting numbers
+                        //So for our efforts here, it's a little less complicated....
+                        string[] firstChapterAndVerse = firstandPossSecond[0].Split(':');
+
+                        var startPosition = multiWordBook ? String.Format("{0} {1} {2}", elements[0], elements[1], firstandPossSecond[0]) : String.Format("{0} {1}", elements[0], firstandPossSecond[0]);
+                        var endPosition = multiWordBook ? String.Format("{0} {1} {2}:{3}", elements[0], elements[1], firstChapterAndVerse[0], firstandPossSecond[1]) : String.Format("{0} {1}:{2}", elements[0], firstChapterAndVerse[0], firstandPossSecond[1]);
+
+                        startPosition = String.Format("{0};{1}", startPosition, endPosition);
+
+                        int[] tempHolder = GetReferencesFromString(startPosition, false);
+                        for (int k = tempHolder[0]; k < tempHolder[1]+1; k++) //Loop through the resulting numbers
                         {
-                            returnList.Add(returnNumber + k); //And add this junk
+                            returnList.Add(k); //And add this junk
                             //Surprisingly, this fits with the scheme.
                         }
                     }
