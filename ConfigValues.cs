@@ -2,6 +2,8 @@
 using System.IO;
 using System.Reflection;
 using System.Windows.Forms;
+using IniParser;
+using IniParser.Model;
 namespace Kuwagata
 {
     public class ConfigValues
@@ -11,14 +13,24 @@ namespace Kuwagata
         public string VerseOutput = @"C:\Users\bolum\Desktop\VerseScraper\VerseToDisplay.txt";
         public string VersionOutput = @"C:\Users\bolum\Desktop\VerseScraper\VerseVersion.txt";
         public string ExecDirectory = Directory.GetParent(Environment.CurrentDirectory).Parent.FullName;
-        public IniFile SettingsFile;
+        public IniData SettingsFile;
 
         public ConfigValues()
         {
-             SettingsFile = new IniFile(ExecDirectory + "Kuwagata.ini");
+            var Parser = new FileIniDataParser();
+            if (!File.Exists("Kuwagata.ini"))
+            {
+                File.Create("Kuwagata.ini");
+            }
+            SettingsFile = Parser.ReadFile("Kuwagata.ini");
         }
 
-       public void LoadAllConfigs()
+        void SetupBlankConfig()
+        {
+
+        }
+
+      /** public void LoadAllConfigs()
         {
             PropertyInfo[] propInfo = this.GetType().GetProperties();
             foreach(PropertyInfo prop in propInfo)
@@ -27,7 +39,7 @@ namespace Kuwagata
                 prop.SetValue(this, SettingsFile.Read(prop.Name));
             }
 
-        }
+        } **/
     
         public void SaveToConfig(Form SettingsForm)
         {

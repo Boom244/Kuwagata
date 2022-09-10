@@ -65,7 +65,7 @@ namespace Kuwagata
             @"Mat\.*(?:t\.*(?:hew)?)?",
             @"Mark|Mar\.*|Mrk\.*",
             @"Luk\.*(?:e)?",
-            @"(John|Joh\.*|Jhn\.*|Jo\.*|Jn\.*)",
+            @"^((?!1|2|3).)*(John|Joh\.*|Jhn\.*|Jo\.*|Jn\.*)",
             @"Act\.*(?:s)?",
             @"Rom\.*(?:ans)?",
             @"1 Co\.*(?:r\.*(?:inthians)?)?",

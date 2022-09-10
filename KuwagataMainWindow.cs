@@ -31,15 +31,15 @@ namespace Kuwagata
             switch (e.KeyCode)
             {
                 case Keys.Left:
-                    Kuwagata.Program.TransformQueue(false);
+                    Program.TransformQueue(false);
                     break;
                 case Keys.Right:
-                    Kuwagata.Program.TransformQueue(true);
+                    Program.TransformQueue(true);
                     break;
                 case Keys.Enter:
                     string Verse = VerseTextBox.Text;
                     string Version = VersionTextBox.Text;
-                    Kuwagata.Program.StartNewRequest(Verse, Version);
+                    Program.StartNewRequest(Verse, Version);
                     break;
             }
         }
@@ -53,12 +53,12 @@ namespace Kuwagata
         {
             string Verse = VerseTextBox.Text;
             string Version = VersionTextBox.Text;
-            Kuwagata.Program.StartNewRequest(Verse, Version);
+            Program.StartNewRequest(Verse, Version);
         }
 
         private void SeekForward_Click(object sender, EventArgs e)
         {
-            Kuwagata.Program.TransformQueue(true);
+            Program.TransformQueue(true);
         }
 
         private void SeekBack_Click(object sender, EventArgs e)

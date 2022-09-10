@@ -118,17 +118,21 @@ namespace Kuwagata
                 }
 
                 //If we are simply referencing an entire book
-                if(((elements.Length == 1) || (elements.Length == 2 && multiWordBook)) && !requests[i].Contains("-"))
+                if (((elements.Length == 1) || (elements.Length == 2 && multiWordBook)) && !requests[i].Contains("-"))
                 {
                     //gotta check for the special condition (explained later)
                     if (specialRecurse)
                     {
                         returnList.Add(returnNumber + 1001);
-                        return returnList.ToArray(); //simply return a starting point (or an end point)
+                        continue; //simply return a starting point (or an end point)
                     }
 
                     int nextBook = BI.IncreaseBibleReference(returnNumber, AddSelectionOptions.Book);
-                    return GetVersesBetweenMarkers(returnNumber, nextBook, AddSelectionOptions.Chapter, false); //Cut off the program there to prevent headache.
+                    foreach (int GVBMref in GetVersesBetweenMarkers(returnNumber, nextBook, AddSelectionOptions.Chapter, false))
+                    {
+                        returnList.Add(GVBMref);
+                    }
+                    continue; //Cut off the current iteration there to prevent headache.
                 }
 
                 //Let's say, hypothetically, for the sake of the argument, we were referencing across two books with no verses specified;
@@ -140,9 +144,12 @@ namespace Kuwagata
                         int startPos = GetReferencesFromString(potentialCrossBookReference[0], true)[0];
                         int endPos = GetReferencesFromString(potentialCrossBookReference[1], true)[0];
 
-                        returnList = GetVersesBetweenMarkers(startPos, endPos, AddSelectionOptions.Chapter, true).ToList();
+                        foreach(int GVBMref in GetVersesBetweenMarkers(startPos, endPos, AddSelectionOptions.Chapter, true))
+                        {
+                            returnList.Add(GVBMref);
+                        }
 
-                        return returnList.ToArray(); //And that's a wrap, folks!
+                        continue; //And that's a wrap, folks!
                                                      //Remember when this function was clean and elegant? Me neither.
                     }
                 }
@@ -200,7 +207,7 @@ namespace Kuwagata
                             }
                         }
                         returnList.Add(endPos);
-                        return returnList.ToArray(); //I really should stop with these and think of something better.
+                        continue; 
 
                     }
                 }
@@ -217,7 +224,7 @@ namespace Kuwagata
                             returnList.Add(a);
                         }
                     }
-                    return returnList.ToArray(); //Cut off the program there to prevent headache.
+                    continue;
                 }
 
 
@@ -284,8 +291,6 @@ namespace Kuwagata
                     
                 }
                 //And this is all still just one iteration of a loop.... ARE WE HAVING FUN YET?!
-                //This is either going to take a large steaming crap all over allocated memory or run up CPU usage. Revisit if either is true.
-
             }
 
             return returnList.ToArray();

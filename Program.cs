@@ -7,7 +7,12 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 /*In the interest of knowing what I'm doing when I come back to this project after a break of any length,
 * I have decided to litter this entire solution with extremely specific comments.
+* 
+* Also, side note: Having the forms directly reference Program.cs for the vital functions of the program is probably
+* not a good thing. Revisit later.
 */
+
+
 namespace Kuwagata
 {
     class Program
@@ -18,12 +23,8 @@ namespace Kuwagata
         public static ConfigValues cv;
         public static string[] verses;
         public static string[] plainVerseReferences;
-        public static string verseOutput = @"C:\Users\bolum\Desktop\VerseScraper\VerseToDisplay.txt";
-        public static string versionOutput = @"C:\Users\bolum\Desktop\VerseScraper\VerseVersion.txt";
         public static int[] verseIds;
         public static int currentIndex;
-        public static string projectDirectory = 
-            Directory.GetParent(Environment.CurrentDirectory).Parent.FullName;
         //Must be the wind.
 
         [STAThread] //prevent C# from freaking out when I open a file dialog
@@ -31,7 +32,7 @@ namespace Kuwagata
         {
             //Initialize all configuration values
             cv = new ConfigValues();
-            cv.LoadAllConfigs();
+            //cv.LoadAllConfigs();
 
             //Create an OSISReader object to give you verses from the requests you put in.
             osisReader = new OSISReader(cv.ExecDirectory + @"\OSISBibles\kjv\verses.json");
@@ -60,8 +61,8 @@ namespace Kuwagata
             //Oh, and an addendum; give them their normalized verse references.
             plainVerseReferences = osisReader.batchDecodeAllReferences(verseIds);
 
-            File.WriteAllText(verseOutput, verses[currentIndex]);
-            File.WriteAllText(versionOutput, plainVerseReferences[currentIndex] + ", " + osisReader.Version.ToUpper());
+            File.WriteAllText(cv.VerseOutput, verses[currentIndex]);
+            File.WriteAllText(cv.VersionOutput, plainVerseReferences[currentIndex] + ", " + osisReader.Version.ToUpper());
 
         }
 
@@ -77,11 +78,11 @@ namespace Kuwagata
             }
             else
             {
-                if(currentIndex == 0) { return; }
+                if(currentIndex == 0) { return; }   
                 currentIndex--;
             }
-            File.WriteAllText(verseOutput, verses[currentIndex]);
-            File.WriteAllText(versionOutput, plainVerseReferences[currentIndex] + ", " + osisReader.Version.ToUpper());
+            File.WriteAllText(cv.VerseOutput, verses[currentIndex]);
+            File.WriteAllText(cv.VersionOutput, plainVerseReferences[currentIndex] + "," + osisReader.Version.ToUpper());
         }
     }
 }
