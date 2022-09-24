@@ -13,8 +13,9 @@ namespace Kuwagata
 {
     public  partial class KuwagataMainWindow : Form
     {
-
-       
+        //Needs to be public in case someone wants to disable the GUI from inside it.
+        public bool isShowingSettings = false;
+        KuwagataSettings ks = new KuwagataSettings();
         public KuwagataMainWindow()
         {
             InitializeComponent();
@@ -77,17 +78,30 @@ namespace Kuwagata
 
         private void VersionTextBox_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Control && e.KeyCode == Keys.A)
+            /**
+             * if (e.Control && e.KeyCode == Keys.A)
             {
                 if (sender != null)
                     ((TextBox)sender).SelectAll();
             }
+             */
         }
 
         private void Settings_Click(object sender, EventArgs e)
         {
-            KuwagataSettings ks = new KuwagataSettings();
-            ks.Show();
+         
+            if (isShowingSettings)
+            {
+                ks.Hide();
+                Program.activeForms.Remove(ks);
+            }
+            else
+            {
+                ks.Show();
+                Program.activeForms.Add(ks);
+            }
+
+            isShowingSettings = !isShowingSettings;
         }
     }
 }

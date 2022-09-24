@@ -24,7 +24,9 @@ namespace Kuwagata
         public static string[] verses;
         public static string[] plainVerseReferences;
         public static int[] verseIds;
+        public static List<Form> activeForms;
         public static int currentIndex;
+        public static KuwagataMainWindow MainWindow;
         //Must be the wind.
 
         [STAThread] //prevent C# from freaking out when I open a file dialog
@@ -32,14 +34,22 @@ namespace Kuwagata
         {
             //Initialize all configuration values
             cv = new ConfigValues();
-            //cv.LoadAllConfigs();
+            cv.LoadConfigSettings();
 
             //Create an OSISReader object to give you verses from the requests you put in.
             osisReader = new OSISReader(cv.ExecDirectory + @"\OSISBibles\kjv\verses.json");
 
+            //Create a list of active forms that can be hidden when I send the program to the tray
+            activeForms = new List<Form>();
+
             //Finally, run the main window.
-            Application.Run(new KuwagataMainWindow());
+
+            MainWindow = new KuwagataMainWindow();
             Application.EnableVisualStyles(); //For use of CTRL-A, CTRL-X, etc....
+            Application.Run(MainWindow);
+
+            activeForms.Add(MainWindow);
+             
             
             
         }

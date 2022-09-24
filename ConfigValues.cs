@@ -13,34 +13,58 @@ namespace Kuwagata
         public string VerseOutput = @"C:\Users\bolum\Desktop\VerseScraper\VerseToDisplay.txt";
         public string VersionOutput = @"C:\Users\bolum\Desktop\VerseScraper\VerseVersion.txt";
         public string ExecDirectory = Directory.GetParent(Environment.CurrentDirectory).Parent.FullName;
-        public IniData SettingsFile;
+
+        public IniData DefaultData;
+
+        public IniData Data { get; set; }
 
         public ConfigValues()
         {
-            var Parser = new FileIniDataParser();
+            
             if (!File.Exists("Kuwagata.ini"))
             {
                 File.Create("Kuwagata.ini");
             }
-            SettingsFile = Parser.ReadFile("Kuwagata.ini");
+
+            //Okay, I don't like this, especially not in the constructor.
+            //I'm going to either move this to another file or do it another way. Eventually.
+
+            DefaultData = new IniData();
+
+            //Sections:
+            DefaultData.Sections.AddSection("Output");
+            DefaultData.Sections.AddSection("VerseConfig");
+            DefaultData.Sections.AddSection("KuwagataDiscreteWindowOutput");
+
+            //Keys:
+            DefaultData["Output"].AddKey("VerseOutput", "FileOutput,");
+            DefaultData["Output"].AddKey("VersionOutput", "FileOutput,");
+            DefaultData["VerseConfig"].AddKey("DefaultLoadedVersion", "String,");
+            DefaultData["KuwagataDiscreteWindowOutput"].AddKey("Fullscreen", "Bool,false");
+            DefaultData["KuwagataDiscreteWindowOutput"].AddKey("Font", "String,");
+            DefaultData["KuwagataDiscreteWindowOutput"].AddKey("FontSize", "String,");
+            DefaultData["KuwagataDiscreteWindowOutput"].AddKey("FontColor", "ColorWheel,");
+            DefaultData["KuwagataDiscreteWindowOutput"].AddKey("BackgroundImage", "FileOutput,");
+
+            
+           
         }
 
-        void SetupBlankConfig()
+       public void LoadConfigSettings()
         {
+            //Setup our data parser
+            var Parser = new FileIniDataParser();
+            Data = Parser.ReadFile("Kuwagata.ini");
 
-        }
-
-      /** public void LoadAllConfigs()
-        {
-            PropertyInfo[] propInfo = this.GetType().GetProperties();
-            foreach(PropertyInfo prop in propInfo)
+            if (File.ReadAllLines(@"Kuwagata.ini").Length == 0) //if our file is empty
             {
-                if (prop.Name == "ExecDirectory" || prop.Name == "SettingsFile") { continue; }
-                prop.SetValue(this, SettingsFile.Read(prop.Name));
+                Parser.WriteFile(@"Kuwagata.ini", DefaultData); //write the default data to it
+                return; //and do not consult the file further
             }
 
-        } **/
-    
+
+        }
+
         public void SaveToConfig(Form SettingsForm)
         {
 

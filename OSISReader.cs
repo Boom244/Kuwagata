@@ -169,8 +169,6 @@ namespace Kuwagata
 
                 returnNumber += Int32.Parse(chapterAndVerse[0]) * 1000; //Again, scheme.
 
-
-
                 if (firstandPossSecond.Length > 1) // Gotta do this to prevent "index outta range"
                 {
                     if ((BI.GetBibleIndexFromArray(elements[0]) != 0 && BI.GetBibleIndexFromArray(firstandPossSecond[1]) != 0)

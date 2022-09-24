@@ -31,7 +31,9 @@ namespace Kuwagata
 
         private void Cancel_Click(object sender, EventArgs e)
         {
-            this.Close();
+            this.Hide();
+            Program.MainWindow.isShowingSettings = false;
+            Program.activeForms.Remove(this);
         }
 
 
