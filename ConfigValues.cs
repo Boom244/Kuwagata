@@ -12,7 +12,7 @@ namespace Kuwagata
         //Config values:
         public string VerseOutput = @"C:\Users\bolum\Desktop\VerseScraper\VerseToDisplay.txt";
         public string VersionOutput = @"C:\Users\bolum\Desktop\VerseScraper\VerseVersion.txt";
-        public string ExecDirectory = Directory.GetParent(Environment.CurrentDirectory).Parent.FullName;
+        public string ExecDirectory = Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName;
 
         public IniData DefaultData;
 

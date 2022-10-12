@@ -103,6 +103,13 @@ namespace Kuwagata
             bool multiWordBook = false;
             for(int i = 0; i < requests.Length; i++)
             {
+                //Okay so a weird error happens if someone does something like put a space between separated references so I'm doing this:
+                while (requests[i][0] == ' ')
+                  {
+                     requests[i] = requests[i].Remove(0, 1);
+                  }
+               
+
                 //First, split the resulting string further by its spaces to get the book and chapter/verses. 
                 elements = requests[i].Split(' '); 
                 //Second, turn the first element of *that* resulting string into a number using BibleIndexes' GetBibleIndexFromArray.
@@ -165,7 +172,6 @@ namespace Kuwagata
 
                 //and now this becomes that
                 chapterAndVerse = firstandPossSecond[0].Split(':'); 
-
 
                 returnNumber += Int32.Parse(chapterAndVerse[0]) * 1000; //Again, scheme.
 
