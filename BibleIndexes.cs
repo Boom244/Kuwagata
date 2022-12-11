@@ -45,7 +45,7 @@ namespace Kuwagata
             @"(Proverbs|Prov\.*|Pro\.*|Prv\.*)",
             @"(Ecclesiastes(?:\s+or\,\s+the\s+Preacher)?|Eccles\.*|Eccle\.*|Eccl\.*|Ecc\.*|Ec\.*|Qoh\.*)",
             @"(Song(?: of (Solomon|Songs|Sol\.*))?)|Canticles|(Canticle(?: of Canticles)?)|SOS|Cant",
-            @"Isa\.*(?:iah)?",
+            @"Is\.*(?:aiah)?",
             @"Jer\.*(?:emiah)?",
             @"Lam\.*(?:entations)?",
             @"(Ezekiel|Ezek\.*|Eze\.*|Ezk\.*)",
