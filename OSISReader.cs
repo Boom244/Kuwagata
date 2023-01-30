@@ -108,14 +108,49 @@ namespace Kuwagata
                   {
                      requests[i] = requests[i].Remove(0, 1);
                   }
+
                
 
-                //First, split the resulting string further by its spaces to get the book and chapter/verses. 
-                elements = requests[i].Split(' '); 
-                //Second, turn the first element of *that* resulting string into a number using BibleIndexes' GetBibleIndexFromArray.
-                
 
-               returnNumber = BI.GetBibleIndexFromArray(elements[0]) * 1000000; //x1000000 because that's the scheme the JSON uses.
+
+                //First, split the resulting string further by its spaces to get the book and chapter/verses. 
+                elements = requests[i].Split(' ');
+
+                //New clause; Sometimes you might want to reference a bunch of new verses within the same book, a la, for example,
+                //"Jonah 1:3-4,14,17,2:1". So, here's what we're gonna do:
+                if (elements[1].Contains(","))
+                {
+                    //split it if it contains it
+                    string[] subelements = elements[1].Split(',');
+
+                    //Set a few dirt-marker elements for us to go through
+                    string[] originalReference = subelements[0].Split(' ');
+                    string book = elements[0];
+                    string chapter = originalReference[0].Split(':')[0];
+                    
+                    foreach(string subelement in subelements) //now we loop through
+                    {
+                        string submittanceString;
+                        //do a check: does it contain a verse and a chapter or just a verse?
+                        if (subelement.Contains(":"))
+                        {
+                            submittanceString = $"{book} {subelement}";
+
+                        }
+                        else
+                        {
+                            submittanceString = $"{book} {chapter}:{subelement}";
+                        }
+                        List<int> l = GetReferencesFromString(submittanceString, false).ToList(); //Surely, more recursion wouldn't hurt...?
+                        returnList = returnList.Concat(l).ToList();
+                    }
+                    continue;
+                }
+
+                //Second, turn the first element of *that* resulting string into a number using BibleIndexes' GetBibleIndexFromArray.
+
+
+                returnNumber = BI.GetBibleIndexFromArray(elements[0]) * 1000000; //x1000000 because that's the scheme the JSON uses.
 
                 //ok so I forgor initially that books like 2 Corinthians and 1 John exist so here's what we're gonna do
                 if (returnNumber == 0)
