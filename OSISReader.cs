@@ -88,6 +88,28 @@ namespace Kuwagata
             return returnList.ToArray();
         }
 
+        public List<int> GetVersesBetweenChapters(bool multiWordBook, string[] elements, string[] firstandPossSecond, List<int> returnList)
+        {
+            // dudedudedude I got this
+
+            //Step 1, set the trap, now laced with direcursional-trisinglelineide-based ricin
+            int startToken = Int32.Parse(GetReferencesFromString((multiWordBook ? elements[0] + " " + elements[1] : elements[0]) + " " + firstandPossSecond[0], false)[0].ToString());
+
+            //Step 2, hatch a terrible idea
+            int endToken = Int32.Parse(GetReferencesFromString((multiWordBook ? elements[0] + " " + elements[1] : elements[0]) + " " + firstandPossSecond[1], false)[0].ToString());
+
+            //Step 3, cross your fingers and hope it works
+            returnList = returnList.Concat(
+                GetVersesBetweenMarkers(
+                    startToken,
+                    endToken,
+                    AddSelectionOptions.Chapter, false)
+                .ToList()
+                ).ToList();
+            returnList.Add(endToken); //Hindsight is always 20/20
+            return returnList;
+
+        }
 
         //Okay, so this whole GetReferencesFromString function has gotten out of hand, so I'm splitting it up into different smaller functions.
         public List<int> SplitCommaSeparatedVerses(List<int> returnList, string[] elements)
@@ -150,7 +172,6 @@ namespace Kuwagata
                 }
 
                 //Second, turn the first element of *that* resulting string into a number using BibleIndexes' GetBibleIndexFromArray.
-
 
                 returnNumber = BI.GetBibleIndexFromArray(elements[0]) * 1000000; //x1000000 because that's the scheme the JSON uses.
 
@@ -215,7 +236,7 @@ namespace Kuwagata
                 if (firstandPossSecond.Length > 1) // Gotta do this to prevent "index outta range"
                 {
                     if ((BI.GetBibleIndexFromArray(elements[0]) != 0 && BI.GetBibleIndexFromArray(firstandPossSecond[1]) != 0)
-                        || (multiWordBook && BI.GetBibleIndexFromArray(elements[0] + " " + elements[1]) != 0 && BI.GetBibleIndexFromArray(firstandPossSecond[1]) != 0))
+                        || (multiWordBook && BI.GetBibleIndexFromArray(elements[0] + " " + elements[1]) != 0 && BI.GetBibleIndexFromArray(firstandPossSecond[1]) != 0)) //What the hell, past me?!
                     {
                         int startPos; //intentionally left vague for now
                         int endPos;
@@ -280,31 +301,7 @@ namespace Kuwagata
 
                     if (firstandPossSecond[1].Contains(':')) // If the split string contains a reference to another verse, in another chapter:
                     {
-                        // dudedudedude I got this
-
-                        //Step 1, set the trap, now laced with direcursional-trisinglelineide-based ricin
-                        string startToken = GetReferencesFromString((multiWordBook ? elements[0] + " " + elements[1] : elements[0]) + " " + firstandPossSecond[0], false)[0].ToString();
-
-                        //Step 2, hatch a terrible idea
-                        string endToken = GetReferencesFromString((multiWordBook ? elements[0] + " " + elements[1] : elements[0]) + " " + firstandPossSecond[1], false)[0].ToString();
-
-                        //Step 3, cross your fingers and hope it works
-                        //I really didn't want to have to do this, but it will be what this is for a lack of a better solution.
-                        for (int m = Int32.Parse(startToken); m < Int32.Parse(endToken) + 1; m++)
-                        {
-                            if (verses.ContainsKey(m.ToString()))
-                            {
-                                returnList.Add(m);
-                            }
-                            else
-                            {
-                                //prevent the program from processing more indexes than it needs to
-                                m = BI.IncreaseBibleReference(m, AddSelectionOptions.Chapter);
-                            }
-                        }
-
-
-
+                       returnList =  GetVersesBetweenChapters(multiWordBook, elements, firstandPossSecond, returnList);
                     }
                     else //if the user (probably me) decides to spare my sanity
                     {
