@@ -88,6 +88,35 @@ namespace Kuwagata
             return returnList.ToArray();
         }
 
+
+        //Okay, so this whole GetReferencesFromString function has gotten out of hand, so I'm splitting it up into different smaller functions.
+        public List<int> SplitCommaSeparatedVerses(List<int> returnList, string[] elements)
+        {
+            //split it if it contains it
+            string[] subelements = elements[1].Split(',');
+
+            //Set a few dirt-marker elements for us to go through
+            string[] originalReference = subelements[0].Split(' ');
+            string book = elements[0];
+            string chapter = originalReference[0].Split(':')[0];
+
+            foreach (string subelement in subelements) //now we loop through
+            {
+                string submittanceString;
+                //do a check: does it contain a verse and a chapter or just a verse?
+                if (subelement.Contains(":"))
+                {
+                    submittanceString = $"{book} {subelement}";
+                }
+                else
+                {
+                    submittanceString = $"{book} {chapter}:{subelement}";
+                }
+                List<int> l = GetReferencesFromString(submittanceString, false).ToList(); //Surely, more recursion wouldn't hurt...?
+                returnList = returnList.Concat(l).ToList();
+            }
+            return returnList;
+        }
         public int[] GetReferencesFromString(string request, bool specialRecurse)
         {   
             //First, split the string by semicolons into individual requests;
@@ -109,41 +138,14 @@ namespace Kuwagata
                      requests[i] = requests[i].Remove(0, 1);
                   }
 
-               
-
-
-
-                //First, split the resulting string further by its spaces to get the book and chapter/verses. 
+               //First, split the resulting string further by its spaces to get the book and chapter/verses. 
                 elements = requests[i].Split(' ');
 
                 //New clause; Sometimes you might want to reference a bunch of new verses within the same book, a la, for example,
                 //"Jonah 1:3-4,14,17,2:1". So, here's what we're gonna do:
                 if (elements[1].Contains(","))
                 {
-                    //split it if it contains it
-                    string[] subelements = elements[1].Split(',');
-
-                    //Set a few dirt-marker elements for us to go through
-                    string[] originalReference = subelements[0].Split(' ');
-                    string book = elements[0];
-                    string chapter = originalReference[0].Split(':')[0];
-                    
-                    foreach(string subelement in subelements) //now we loop through
-                    {
-                        string submittanceString;
-                        //do a check: does it contain a verse and a chapter or just a verse?
-                        if (subelement.Contains(":"))
-                        {
-                            submittanceString = $"{book} {subelement}";
-
-                        }
-                        else
-                        {
-                            submittanceString = $"{book} {chapter}:{subelement}";
-                        }
-                        List<int> l = GetReferencesFromString(submittanceString, false).ToList(); //Surely, more recursion wouldn't hurt...?
-                        returnList = returnList.Concat(l).ToList();
-                    }
+                    returnList = SplitCommaSeparatedVerses(returnList, elements);
                     continue;
                 }
 
