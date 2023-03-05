@@ -165,7 +165,7 @@ namespace Kuwagata
 
                 //New clause; Sometimes you might want to reference a bunch of new verses within the same book, a la, for example,
                 //"Jonah 1:3-4,14,17,2:1". So, here's what we're gonna do:
-                if (elements[1].Contains(","))
+                if (elements.Length > 1 && elements[1].Contains(","))
                 {
                     returnList = SplitCommaSeparatedVerses(returnList, elements);
                     continue;
@@ -200,7 +200,7 @@ namespace Kuwagata
                     continue; //Cut off the current iteration there to prevent headache.
                 }
 
-                //Let's say, hypothetically, for the sake of the argument, we were referencing across two books with no verses specified;
+                //Let's say, hypothetically, for the sake of the argument, we were referencing across two books;
                 string[] potentialCrossBookReference = requests[i].Split('-');
                 if (potentialCrossBookReference.Length > 1)
                 {
@@ -213,67 +213,19 @@ namespace Kuwagata
                         {
                             returnList.Add(GVBMref);
                         }
-
+                        returnList.Add(endPos);
                         continue; //And that's a wrap, folks!
                                                      //Remember when this function was clean and elegant? Me neither.
                     }
                 }
-                
-
-
-
 
                 //This is a little part I reworked because the first time I did this I made a planning error structurally
                 firstandPossSecond = multiWordBook ? elements[2].Split('-') : elements[1].Split('-'); //ternary operator 
-
-
 
                 //and now this becomes that
                 chapterAndVerse = firstandPossSecond[0].Split(':'); 
 
                 returnNumber += Int32.Parse(chapterAndVerse[0]) * 1000; //Again, scheme.
-
-                if (firstandPossSecond.Length > 1) // Gotta do this to prevent "index outta range"
-                {
-                    if ((BI.GetBibleIndexFromArray(elements[0]) != 0 && BI.GetBibleIndexFromArray(firstandPossSecond[1]) != 0)
-                        || (multiWordBook && BI.GetBibleIndexFromArray(elements[0] + " " + elements[1]) != 0 && BI.GetBibleIndexFromArray(firstandPossSecond[1]) != 0)) //What the hell, past me?!
-                    {
-                        int startPos; //intentionally left vague for now
-                        int endPos;
-
-                        //Step 1, stitch back together the reference you had in the first book
-                        string startRef = elements[0] + " " + firstandPossSecond[0];
-                        //Step 2, Craft the second reference from the edges of requests[i]
-                        string endRef = requests[i].Remove(0, startRef.Length + 1);
-                        //Step 3, smack 'em both together and get the numerical references by running this function again
-                        int[] numRef = GetReferencesFromString(startRef + ";" + endRef, true); //Adding a special condition just for this
-
-                        //By all means this shouldn't happen but just in case it does
-                        startPos = numRef[0] < numRef[1] ? numRef[0] : numRef[1]; //if the end position is somehow smaller than the start, swap em around
-                        endPos = numRef[0] < numRef[1] ? numRef[1] : numRef[0]; //and so on
-
-                        for (int j = startPos; j < endPos; j++)
-                        {
-                            if (verses.ContainsKey(j.ToString()))
-                            {
-                                returnList.Add(j);
-                            }
-                            else
-                            {
-                                //prevent the program from processing more indexes than it needs to
-                                j = BI.IncreaseBibleReference(j, AddSelectionOptions.Chapter) + 1;
-                                if (verses.ContainsKey(j.ToString()) == false)
-                                {
-                                    j = BI.IncreaseBibleReference(j, AddSelectionOptions.Book);
-                                }
-                            }
-                        }
-                        returnList.Add(endPos);
-                        continue; 
-
-                    }
-                }
-               
 
                 //If there's just a chapter and no verse:
                 if (chapterAndVerse.Length == 1)
