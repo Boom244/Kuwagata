@@ -1,9 +1,6 @@
 ﻿using System;
-using System.IO;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.IO;
 using System.Windows.Forms;
 /*In the interest of knowing what I'm doing when I come back to this project after a break of any length,
 * I have decided to litter this entire solution with extremely specific comments.
@@ -49,16 +46,16 @@ namespace Kuwagata
             Application.Run(MainWindow);
 
             activeForms.Add(MainWindow);
-             
-            
-            
+
+
+
         }
 
         public static void StartNewRequest(string Verse, string Version)
         {
             //Reset the current index
             currentIndex = 0;
-            
+
             //If the version is different than the preload, swap over.
             if (Version != osisReader.Version)
             {
@@ -78,18 +75,18 @@ namespace Kuwagata
 
         public static void TransformQueue(bool way)
         {
-            if (verses == null ) { return; }
-                
+            if (verses == null) { return; }
+
             //True is for forward, False is for backward.
             //this could be a nested conditional, but those are yucky :(
             if (way)
             {
-                if (currentIndex == verses.Length - 1) { return;  }
+                if (currentIndex == verses.Length - 1) { return; }
                 currentIndex++;
             }
             else
             {
-                if(currentIndex == 0) { return; }   
+                if (currentIndex == 0) { return; }
                 currentIndex--;
             }
             File.WriteAllText(cv.VerseOutput, verses[currentIndex]);

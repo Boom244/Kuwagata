@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.IO;
+﻿using System.IO;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Text;
 
 namespace Kuwagata
 {
-   public class IniFile   // revision 11
+    public class IniFile   // revision 11
     {
         string Path;
         string EXE = Assembly.GetExecutingAssembly().GetName().Name;

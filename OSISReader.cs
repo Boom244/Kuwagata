@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.IO;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 
 namespace Kuwagata
 {
@@ -25,15 +23,15 @@ namespace Kuwagata
         private int[] GetVersesBetweenMarkers(int startMarker, int endMarker, AddSelectionOptions skipOption, bool escalate)
         {
             List<int> returnList = new List<int>();
-           
+
 
             //ok so I realized people are beyond idiotic (including myself) so I'm going to do this
-           if (startMarker > endMarker)
+            if (startMarker > endMarker)
             {
                 //I don't wanna use a temp so I'm just going to carbon-copy this programming interview question
                 startMarker += endMarker;
                 endMarker = startMarker - endMarker;
-                startMarker -=  endMarker;
+                startMarker -= endMarker;
             }
 
             for (int j = startMarker; j < endMarker; j++)
@@ -54,7 +52,7 @@ namespace Kuwagata
                     {
                         returnList.Add(j);
                     }
-                    
+
                 }
             }
             return returnList.ToArray(); //I might be a little rarted but this makes me less rarted
@@ -140,7 +138,7 @@ namespace Kuwagata
             return returnList;
         }
         public int[] GetReferencesFromString(string request, bool specialRecurse)
-        {   
+        {
             //First, split the string by semicolons into individual requests;
             string[] requests = request.Split(';');
 
@@ -152,15 +150,15 @@ namespace Kuwagata
             string[] firstandPossSecond;
             int returnNumber = 0;
             bool multiWordBook = false;
-            for(int i = 0; i < requests.Length; i++)
+            for (int i = 0; i < requests.Length; i++)
             {
                 //Okay so a weird error happens if someone does something like put a space between separated references so I'm doing this:
                 while (requests[i][0] == ' ')
-                  {
-                     requests[i] = requests[i].Remove(0, 1);
-                  }
+                {
+                    requests[i] = requests[i].Remove(0, 1);
+                }
 
-               //First, split the resulting string further by its spaces to get the book and chapter/verses. 
+                //First, split the resulting string further by its spaces to get the book and chapter/verses. 
                 elements = requests[i].Split(' ');
 
                 //New clause; Sometimes you might want to reference a bunch of new verses within the same book, a la, for example,
@@ -209,13 +207,13 @@ namespace Kuwagata
                         int startPos = GetReferencesFromString(potentialCrossBookReference[0], true)[0];
                         int endPos = GetReferencesFromString(potentialCrossBookReference[1], true)[0];
 
-                        foreach(int GVBMref in GetVersesBetweenMarkers(startPos, endPos, AddSelectionOptions.Chapter, true))
+                        foreach (int GVBMref in GetVersesBetweenMarkers(startPos, endPos, AddSelectionOptions.Chapter, true))
                         {
                             returnList.Add(GVBMref);
                         }
                         returnList.Add(endPos);
                         continue; //And that's a wrap, folks!
-                                                     //Remember when this function was clean and elegant? Me neither.
+                                  //Remember when this function was clean and elegant? Me neither.
                     }
                 }
 
@@ -223,7 +221,7 @@ namespace Kuwagata
                 firstandPossSecond = multiWordBook ? elements[2].Split('-') : elements[1].Split('-'); //ternary operator 
 
                 //and now this becomes that
-                chapterAndVerse = firstandPossSecond[0].Split(':'); 
+                chapterAndVerse = firstandPossSecond[0].Split(':');
 
                 returnNumber += Int32.Parse(chapterAndVerse[0]) * 1000; //Again, scheme.
 
@@ -245,15 +243,12 @@ namespace Kuwagata
                 //Fourth is where the loop branches.
                 if (firstandPossSecond.Length >= 2) //If a second element exists, branch and get all the verses between the first and second number. 
                 {
-
-
-
                     string[] nums = chapterAndVerse[1].Split('-'); //YES, YES, SPLIT IT WIDE OPEN
                     //Now comes the part where I lose all of my remaining sanity:
 
                     if (firstandPossSecond[1].Contains(':')) // If the split string contains a reference to another verse, in another chapter:
                     {
-                       returnList =  GetVersesBetweenChapters(multiWordBook, elements, firstandPossSecond, returnList);
+                        returnList = GetVersesBetweenChapters(multiWordBook, elements, firstandPossSecond, returnList);
                     }
                     else //if the user (probably me) decides to spare my sanity
                     {
@@ -266,19 +261,19 @@ namespace Kuwagata
                         startPosition = String.Format("{0};{1}", startPosition, endPosition);
 
                         int[] tempHolder = GetReferencesFromString(startPosition, false);
-                        for (int k = tempHolder[0]; k < tempHolder[1]+1; k++) //Loop through the resulting numbers
+                        for (int k = tempHolder[0]; k < tempHolder[1] + 1; k++) //Loop through the resulting numbers
                         {
                             returnList.Add(k); //And add this junk
                             //Surprisingly, this fits with the scheme.
                         }
                     }
 
-                   
+
                 }
                 else
                 {
                     returnList.Add(returnNumber + Int32.Parse(chapterAndVerse[1]));
-                    
+
                 }
                 //And this is all still just one iteration of a loop.... ARE WE HAVING FUN YET?!
             }
@@ -290,7 +285,7 @@ namespace Kuwagata
         public string[] GetVersesFromReferences(int[] references)
         {
             List<string> def = new List<string>();
-            foreach(int reference in references)
+            foreach (int reference in references)
             {
                 def.Add(verses[reference.ToString()].ToString()); //I don't know if the fact that this works means I'm stupid or a genius
             }

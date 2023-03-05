@@ -1,9 +1,8 @@
-﻿using System;
-using System.IO;
-using System.Reflection;
-using System.Windows.Forms;
-using IniParser;
+﻿using IniParser;
 using IniParser.Model;
+using System;
+using System.IO;
+using System.Windows.Forms;
 namespace Kuwagata
 {
     public class ConfigValues
@@ -20,7 +19,7 @@ namespace Kuwagata
 
         public ConfigValues()
         {
-            
+
             if (!File.Exists("Kuwagata.ini"))
             {
                 File.Create("Kuwagata.ini");
@@ -46,11 +45,11 @@ namespace Kuwagata
             DefaultData["KuwagataDiscreteWindowOutput"].AddKey("FontColor", "ColorWheel,");
             DefaultData["KuwagataDiscreteWindowOutput"].AddKey("BackgroundImage", "FileOutput,");
 
-            
-           
+
+
         }
 
-       public void LoadConfigSettings()
+        public void LoadConfigSettings()
         {
             //Setup our data parser
             var Parser = new FileIniDataParser();

@@ -1,11 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading;
 using System.Windows.Forms;
 
 namespace Kuwagata
@@ -39,7 +32,7 @@ namespace Kuwagata
 
         void ShowNewFile(TextBox dumper, string filter)
         {
-            
+
             filter = filter != null ? filter : "All files (*.*)|*.*";
 
             using (OpenFileDialog ofd = new OpenFileDialog())
@@ -48,7 +41,7 @@ namespace Kuwagata
                 ofd.Filter = filter;
                 ofd.FilterIndex = 0;
                 ofd.RestoreDirectory = false;
-                
+
                 if (ofd.ShowDialog() == DialogResult.OK)
                 {
                     dumper.Text = ofd.FileName;

@@ -1,17 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 
 namespace Kuwagata
 {
-    public  partial class KuwagataMainWindow : Form
+    public partial class KuwagataMainWindow : Form
     {
         //Needs to be public in case someone wants to disable the GUI from inside it.
         public bool isShowingSettings = false;
@@ -24,9 +17,9 @@ namespace Kuwagata
 
         private void KuwagataMainWindow_Load(object sender, EventArgs e)
         {
-            
+
         }
-        
+
         private void KuwagataMainWindow_OnKeyUp(object sender, KeyEventArgs e)
         {
             switch (e.KeyCode)
@@ -89,7 +82,7 @@ namespace Kuwagata
 
         private void Settings_Click(object sender, EventArgs e)
         {
-         
+
             if (isShowingSettings)
             {
                 ks.Hide();

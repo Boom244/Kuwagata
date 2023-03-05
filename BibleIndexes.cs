@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 
 namespace Kuwagata
 {
@@ -9,7 +7,7 @@ namespace Kuwagata
 
         public BibleIndexes()
         {
-            
+
         }
 
         public int IncreaseBibleReference(int currentReference, AddSelectionOptions option)
@@ -159,12 +157,12 @@ namespace Kuwagata
                 "Jude",
                 "Revelation"
         };
-         //Secret tool for later:       Obadiah,  3 John,   2 John,   Philemon, Jude
-        public int[] OneChapterBooks = {31000000, 64000000, 63000000, 57000000, 65000000};
+        //Secret tool for later:       Obadiah,  3 John,   2 John,   Philemon, Jude
+        public int[] OneChapterBooks = { 31000000, 64000000, 63000000, 57000000, 65000000 };
 
         public int GetBibleIndexFromArray(string element)
         {
-            for(int i = 0; i < BibleRegexArray.Length; i++)
+            for (int i = 0; i < BibleRegexArray.Length; i++)
             {
                 if (Regex.IsMatch(element, BibleRegexArray[i], RegexOptions.IgnoreCase)) //This function is likely comp. expensive, but that's a problem for another day 
                 {
@@ -178,9 +176,9 @@ namespace Kuwagata
 
     }
 
-   
 
-  
+
+
 
 
     public enum AddSelectionOptions : int
