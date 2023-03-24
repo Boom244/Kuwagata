@@ -78,7 +78,7 @@ namespace Kuwagata
             if (verses == null) { return; }
 
             //True is for forward, False is for backward.
-            //this could be a nested conditional, but those are yucky :(
+            //this could be a nested ternary, but those are yucky :(
             if (way)
             {
                 if (currentIndex == verses.Length - 1) { return; }

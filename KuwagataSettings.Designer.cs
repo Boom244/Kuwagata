@@ -38,27 +38,31 @@ namespace Kuwagata
             this.label2 = new System.Windows.Forms.Label();
             this.ApplyChanges = new System.Windows.Forms.Button();
             this.Cancel = new System.Windows.Forms.Button();
+            this.label3 = new System.Windows.Forms.Label();
+            this.DefaultBibleVersionText = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(13, 36);
+            this.label1.Location = new System.Drawing.Point(3, 46);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(92, 17);
+            this.label1.Size = new System.Drawing.Size(84, 16);
             this.label1.TabIndex = 0;
             this.label1.Text = "Verse Output";
+            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // VerseOutputText
             // 
-            this.VerseOutputText.Location = new System.Drawing.Point(201, 36);
+            this.VerseOutputText.Location = new System.Drawing.Point(201, 43);
             this.VerseOutputText.Name = "VerseOutputText";
             this.VerseOutputText.Size = new System.Drawing.Size(174, 22);
             this.VerseOutputText.TabIndex = 1;
             // 
             // PathSelector1
             // 
-            this.PathSelector1.Location = new System.Drawing.Point(381, 36);
+            this.PathSelector1.Location = new System.Drawing.Point(381, 43);
             this.PathSelector1.Name = "PathSelector1";
             this.PathSelector1.Size = new System.Drawing.Size(28, 23);
             this.PathSelector1.TabIndex = 2;
@@ -68,7 +72,7 @@ namespace Kuwagata
             // 
             // PathSelector2
             // 
-            this.PathSelector2.Location = new System.Drawing.Point(380, 73);
+            this.PathSelector2.Location = new System.Drawing.Point(381, 79);
             this.PathSelector2.Name = "PathSelector2";
             this.PathSelector2.Size = new System.Drawing.Size(28, 22);
             this.PathSelector2.TabIndex = 5;
@@ -78,7 +82,7 @@ namespace Kuwagata
             // 
             // VersionOutputText
             // 
-            this.VersionOutputText.Location = new System.Drawing.Point(201, 73);
+            this.VersionOutputText.Location = new System.Drawing.Point(201, 79);
             this.VersionOutputText.Name = "VersionOutputText";
             this.VersionOutputText.Size = new System.Drawing.Size(173, 22);
             this.VersionOutputText.TabIndex = 4;
@@ -86,11 +90,12 @@ namespace Kuwagata
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(12, 73);
+            this.label2.Location = new System.Drawing.Point(3, 79);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(103, 17);
+            this.label2.Size = new System.Drawing.Size(94, 16);
             this.label2.TabIndex = 3;
             this.label2.Text = "Version Output";
+            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // ApplyChanges
             // 
@@ -112,11 +117,41 @@ namespace Kuwagata
             this.Cancel.UseVisualStyleBackColor = true;
             this.Cancel.Click += new System.EventHandler(this.Cancel_Click);
             // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.Location = new System.Drawing.Point(9, 5);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(96, 31);
+            this.label3.TabIndex = 8;
+            this.label3.Text = "General";
+            // 
+            // DefaultBibleVersionText
+            // 
+            this.DefaultBibleVersionText.Location = new System.Drawing.Point(201, 113);
+            this.DefaultBibleVersionText.Name = "DefaultBibleVersionText";
+            this.DefaultBibleVersionText.Size = new System.Drawing.Size(173, 22);
+            this.DefaultBibleVersionText.TabIndex = 10;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(3, 113);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(132, 16);
+            this.label4.TabIndex = 9;
+            this.label4.Text = "Default Bible Version";
+            this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // KuwagataSettings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(412, 503);
+            this.Controls.Add(this.DefaultBibleVersionText);
+            this.Controls.Add(this.label4);
+            this.Controls.Add(this.label3);
             this.Controls.Add(this.Cancel);
             this.Controls.Add(this.ApplyChanges);
             this.Controls.Add(this.PathSelector2);
@@ -147,5 +182,8 @@ namespace Kuwagata
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button ApplyChanges;
         private System.Windows.Forms.Button Cancel;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.TextBox DefaultBibleVersionText;
+        private System.Windows.Forms.Label label4;
     }
 }
