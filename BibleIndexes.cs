@@ -1,5 +1,5 @@
 ﻿using System.Text.RegularExpressions;
-
+using System;
 namespace Kuwagata
 {
     public class BibleIndexes
@@ -41,7 +41,7 @@ namespace Kuwagata
             @"Job",
             @"(Psalms|Psalm|Pslm\.*|Psa\.*|Psm\.*|Pss\.*|Ps\.*)",
             @"(Proverbs|Prov\.*|Pro\.*|Prv\.*)",
-            @"(Ecclesiastes(?:\s+or\,\s+the\s+Preacher)?|Eccles\.*|Eccle\.*|Eccl\.*|Ecc\.*|Ec\.*|Qoh\.*)",
+            @"(Ecclesiastes(?:\s+or\,\s+the\s+Preacher)?|Eccles\.*|Eccle\.*|Eccl\.*|Ecc\.*|Ec\.*|Qoh\.*)$",
             @"(Song(?: of (Solomon|Songs|Sol\.*))?)|Canticles|(Canticle(?: of Canticles)?)|SOS|Cant",
             @"Is\.*(?:aiah)?",
             @"Jer\.*(?:emiah)?",
@@ -166,6 +166,7 @@ namespace Kuwagata
             {
                 if (Regex.IsMatch(element, BibleRegexArray[i], RegexOptions.IgnoreCase)) //This function is likely comp. expensive, but that's a problem for another day 
                 {
+                    Console.WriteLine(BibleRegexArray[i] + " has matched with " + element);
                     return i + 1; // Indexes start at 0, so we gotta pump up those numbers.
                 }
             }
