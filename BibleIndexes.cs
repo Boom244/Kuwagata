@@ -166,7 +166,6 @@ namespace Kuwagata
             {
                 if (Regex.IsMatch(element, BibleRegexArray[i], RegexOptions.IgnoreCase)) //This function is likely comp. expensive, but that's a problem for another day 
                 {
-                    Console.WriteLine(BibleRegexArray[i] + " has matched with " + element);
                     return i + 1; // Indexes start at 0, so we gotta pump up those numbers.
                 }
             }

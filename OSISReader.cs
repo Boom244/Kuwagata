@@ -152,14 +152,23 @@ namespace Kuwagata
             bool multiWordBook = false;
             for (int i = 0; i < requests.Length; i++)
             {
+
+
                 //Okay so a weird error happens if someone does something like put a space between separated references so I'm doing this:
                 while (requests[i][0] == ' ')
                 {
                     requests[i] = requests[i].Remove(0, 1);
                 }
 
-                //First, split the resulting string further by its spaces to get the book and chapter/verses. 
-                elements = requests[i].Split(' ');
+                //Stylistic choice; If you end a reference with a semicolon and put nothing after it, then an error pops up.
+                //So:
+                if (requests[i] == "")
+                {
+                    continue;
+                }
+
+                    //First, split the resulting string further by its spaces to get the book and chapter/verses. 
+                    elements = requests[i].Split(' ');
 
                 //New clause; Sometimes you might want to reference a bunch of new verses within the same book, a la, for example,
                 //"Jonah 1:3-4,14,17,2:1". So, here's what we're gonna do:
