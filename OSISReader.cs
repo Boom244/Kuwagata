@@ -111,7 +111,7 @@ namespace Kuwagata
 
         //Okay, so this whole GetReferencesFromString function has gotten out of hand, so I'm splitting it up into different smaller functions.
         public List<int> SplitCommaSeparatedVerses(List<int> returnList, string[] elements)
-        {
+        {            
             //split it if it contains it
             string[] subelements = elements[1].Split(',');
 
@@ -123,6 +123,7 @@ namespace Kuwagata
             foreach (string subelement in subelements) //now we loop through
             {
                 string submittanceString;
+             
                 //do a check: does it contain a verse and a chapter or just a verse?
                 if (subelement.Contains(":"))
                 {
@@ -149,11 +150,11 @@ namespace Kuwagata
             string[] chapterAndVerse;
             string[] firstandPossSecond;
             int returnNumber = 0;
-            bool multiWordBook = false;
+           
             for (int i = 0; i < requests.Length; i++)
             {
 
-
+                bool multiWordBook = false;
                 //Okay so a weird error happens if someone does something like put a space between separated references so I'm doing this:
                 while (requests[i][0] == ' ')
                 {
