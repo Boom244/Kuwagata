@@ -69,6 +69,7 @@ namespace Kuwagata
             this.VerseTextBox.TabIndex = 1;
             this.VerseTextBox.Text = "Genesis 1:1";
             this.VerseTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.VerseTextBox.TextChanged += new System.EventHandler(this.VerseTextBox_TextChanged);
             // 
             // VersionTextBox
             // 

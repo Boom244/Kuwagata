@@ -96,5 +96,10 @@ namespace Kuwagata
 
             isShowingSettings = !isShowingSettings;
         }
+
+        private void VerseTextBox_TextChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }

@@ -15,7 +15,7 @@ namespace Kuwagata
     class Program
     {
 
-        //I get the strange feeling I'm doing something wrong here....
+        
         public static OSISReader osisReader;
         public static ConfigValues cv;
         public static string[] verses;
@@ -24,9 +24,10 @@ namespace Kuwagata
         public static List<Form> activeForms;
         public static int currentIndex;
         public static KuwagataMainWindow MainWindow;
-        //Must be the wind.
+        public static VerseHolder verseHolder;
+    
 
-        [STAThread] //prevent C# from freaking out when I open a file dialog
+        [STAThread] //Program does NOT like it when you try to open file dialogs without this.
         public static void Main(string[] args)
         {
             //Initialize all configuration values
@@ -37,8 +38,9 @@ namespace Kuwagata
             osisReader = new OSISReader(cv.ExecDirectory + @"\OSISBibles\kjv\verses.json");
 
             //Create a list of active forms that can be hidden when I send the program to the tray
+            //also the verse thingy as well
             activeForms = new List<Form>();
-
+            verseHolder = new VerseHolder();
             //Finally, run the main window.
 
             MainWindow = new KuwagataMainWindow();
@@ -46,6 +48,7 @@ namespace Kuwagata
             Application.Run(MainWindow);
 
             activeForms.Add(MainWindow);
+            activeForms.Add(verseHolder);
 
 
 
@@ -65,7 +68,7 @@ namespace Kuwagata
             //Give the user their verses.
             verseIds = osisReader.GetReferencesFromString(Verse, false);
             verses = osisReader.GetVersesFromReferences(verseIds);
-            //Oh, and an addendum; give them their normalized verse references.
+
             plainVerseReferences = osisReader.batchDecodeAllReferences(verseIds);
 
             File.WriteAllText(cv.VerseOutput, verses[currentIndex]);
@@ -78,7 +81,7 @@ namespace Kuwagata
             if (verses == null) { return; }
 
             //True is for forward, False is for backward.
-            //this could be a nested ternary, but those are yucky :(
+            //this could be a nested ternary, but it's not for the sake of readability.
             if (way)
             {
                 if (currentIndex == verses.Length - 1) { return; }

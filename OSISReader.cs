@@ -19,7 +19,7 @@ namespace Kuwagata
             BI = new BibleIndexes();
         }
 
-        //Okay so since I keep seeing a bunch of similar code in GetReferencesFromString I'ma keep this function DRY
+        //DRY concerns
         private int[] GetVersesBetweenMarkers(int startMarker, int endMarker, AddSelectionOptions skipOption, bool escalate)
         {
             List<int> returnList = new List<int>();
@@ -88,15 +88,9 @@ namespace Kuwagata
 
         public List<int> GetVersesBetweenChapters(bool multiWordBook, string[] elements, string[] firstandPossSecond, List<int> returnList)
         {
-            // dudedudedude I got this
-
-            //Step 1, set the trap, now laced with direcursional-trisinglelineide-based ricin
             int startToken = Int32.Parse(GetReferencesFromString((multiWordBook ? elements[0] + " " + elements[1] : elements[0]) + " " + firstandPossSecond[0], false)[0].ToString());
-
-            //Step 2, hatch a terrible idea
             int endToken = Int32.Parse(GetReferencesFromString((multiWordBook ? elements[0] + " " + elements[1] : elements[0]) + " " + firstandPossSecond[1], false)[0].ToString());
 
-            //Step 3, cross your fingers and hope it works
             returnList = returnList.Concat(
                 GetVersesBetweenMarkers(
                     startToken,
@@ -104,18 +98,16 @@ namespace Kuwagata
                     AddSelectionOptions.Chapter, false)
                 .ToList()
                 ).ToList();
-            returnList.Add(endToken); //Hindsight is always 20/20
+            returnList.Add(endToken);
             return returnList;
 
         }
 
-        //Okay, so this whole GetReferencesFromString function has gotten out of hand, so I'm splitting it up into different smaller functions.
+        //DRY concerns
         public List<int> SplitCommaSeparatedVerses(List<int> returnList, string[] elements)
         {            
-            //split it if it contains it
             string[] subelements = elements[1].Split(',');
 
-            //Set a few dirt-marker elements for us to go through
             string[] originalReference = subelements[0].Split(' ');
             string book = elements[0];
             string chapter = originalReference[0].Split(':')[0];
@@ -133,7 +125,7 @@ namespace Kuwagata
                 {
                     submittanceString = $"{book} {chapter}:{subelement}";
                 }
-                List<int> l = GetReferencesFromString(submittanceString, false).ToList(); //Surely, more recursion wouldn't hurt...?
+                List<int> l = GetReferencesFromString(submittanceString, false).ToList(); 
                 returnList = returnList.Concat(l).ToList();
             }
             return returnList;
@@ -155,14 +147,13 @@ namespace Kuwagata
             {
 
                 bool multiWordBook = false;
-                //Okay so a weird error happens if someone does something like put a space between separated references so I'm doing this:
+                //Error catch that happens if someone does something like put a space between separated references so I'm doing this:
                 while (requests[i][0] == ' ')
                 {
                     requests[i] = requests[i].Remove(0, 1);
                 }
 
                 //Stylistic choice; If you end a reference with a semicolon and put nothing after it, then an error pops up.
-                //So:
                 if (requests[i] == "")
                 {
                     continue;
@@ -183,7 +174,7 @@ namespace Kuwagata
 
                 returnNumber = BI.GetBibleIndexFromArray(elements[0]) * 1000000; //x1000000 because that's the scheme the JSON uses.
 
-                //ok so I forgor initially that books like 2 Corinthians and 1 John exist so here's what we're gonna do
+                //Accomodations for multi-word books
                 if (returnNumber == 0)
                 {
                     returnNumber = BI.GetBibleIndexFromArray(elements[0] + " " + elements[1]) * 1000000;
@@ -205,10 +196,9 @@ namespace Kuwagata
                     {
                         returnList.Add(GVBMref);
                     }
-                    continue; //Cut off the current iteration there to prevent headache.
+                    continue; 
                 }
 
-                //Let's say, hypothetically, for the sake of the argument, we were referencing across two books;
                 string[] potentialCrossBookReference = requests[i].Split('-');
                 if (potentialCrossBookReference.Length > 1)
                 {
@@ -222,18 +212,15 @@ namespace Kuwagata
                             returnList.Add(GVBMref);
                         }
                         returnList.Add(endPos);
-                        continue; //And that's a wrap, folks!
-                                  //Remember when this function was clean and elegant? Me neither.
+                        continue; 
                     }
                 }
 
-                //This is a little part I reworked because the first time I did this I made a planning error structurally
                 firstandPossSecond = multiWordBook ? elements[2].Split('-') : elements[1].Split('-'); //ternary operator 
 
-                //and now this becomes that
                 chapterAndVerse = firstandPossSecond[0].Split(':');
 
-                returnNumber += Int32.Parse(chapterAndVerse[0]) * 1000; //Again, scheme.
+                returnNumber += Int32.Parse(chapterAndVerse[0]) * 1000; 
 
                 //If there's just a chapter and no verse:
                 if (chapterAndVerse.Length == 1)
@@ -250,19 +237,17 @@ namespace Kuwagata
                 }
 
 
-                //Fourth is where the loop branches.
                 if (firstandPossSecond.Length >= 2) //If a second element exists, branch and get all the verses between the first and second number. 
                 {
-                    string[] nums = chapterAndVerse[1].Split('-'); //YES, YES, SPLIT IT WIDE OPEN
-                    //Now comes the part where I lose all of my remaining sanity:
+                    string[] nums = chapterAndVerse[1].Split('-'); 
+                    
 
                     if (firstandPossSecond[1].Contains(':')) // If the split string contains a reference to another verse, in another chapter:
                     {
                         returnList = GetVersesBetweenChapters(multiWordBook, elements, firstandPossSecond, returnList);
                     }
-                    else //if the user (probably me) decides to spare my sanity
+                    else 
                     {
-                        //So for our efforts here, it's a little less complicated....
                         string[] firstChapterAndVerse = firstandPossSecond[0].Split(':');
 
                         var startPosition = multiWordBook ? String.Format("{0} {1} {2}", elements[0], elements[1], firstandPossSecond[0]) : String.Format("{0} {1}", elements[0], firstandPossSecond[0]);
@@ -273,8 +258,7 @@ namespace Kuwagata
                         int[] tempHolder = GetReferencesFromString(startPosition, false);
                         for (int k = tempHolder[0]; k < tempHolder[1] + 1; k++) //Loop through the resulting numbers
                         {
-                            returnList.Add(k); //And add this junk
-                            //Surprisingly, this fits with the scheme.
+                            returnList.Add(k); 
                         }
                     }
 
@@ -285,11 +269,10 @@ namespace Kuwagata
                     returnList.Add(returnNumber + Int32.Parse(chapterAndVerse[1]));
 
                 }
-                //And this is all still just one iteration of a loop.... ARE WE HAVING FUN YET?!
             }
 
             return returnList.ToArray();
-            //So hopefully, as a result of this function, an input of {"Genesis 1:1", "Genesis 1:2"} SHOULD return {1001001, 1001002}.
+            //So hopefully, as a result of this function, an input of {"Genesis 1:1", "Genesis 1:2"} should return {1001001, 1001002}.
         }
 
         public string[] GetVersesFromReferences(int[] references)

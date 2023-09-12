@@ -13,13 +13,13 @@ namespace Kuwagata
         public int IncreaseBibleReference(int currentReference, AddSelectionOptions option)
         {
 
-            //forcing order of operations here because I don't trust C#
+            
             //      base value minus the remainder of value div by option plus option
             return (currentReference - (currentReference % (int)option)) + (int)option;
         }
 
-        //btw all of these regexes are ripped from Avendesora's pythonbible
-        //avendesora if you end up seeing this pls no bully
+        //Regexes taken from Avendesora's python-bible
+        // https://github.com/avendesora/pythonbible/blob/main/pythonbible/books.py
         public string[] BibleRegexArray = {
             @"Gen\.*(?:esis)?",
             @"Exo\.*(?:d\.*)?(?:us)?",
@@ -157,16 +157,16 @@ namespace Kuwagata
                 "Jude",
                 "Revelation"
         };
-        //Secret tool for later:       Obadiah,  3 John,   2 John,   Philemon, Jude
+        //Going to need this later:      Obadiah,  3 John,   2 John,   Philemon, Jude
         public int[] OneChapterBooks = { 31000000, 64000000, 63000000, 57000000, 65000000 };
 
         public int GetBibleIndexFromArray(string element)
         {
             for (int i = 0; i < BibleRegexArray.Length; i++)
             {
-                if (Regex.IsMatch(element, BibleRegexArray[i], RegexOptions.IgnoreCase)) //This function is likely comp. expensive, but that's a problem for another day 
+                if (Regex.IsMatch(element, BibleRegexArray[i], RegexOptions.IgnoreCase)) 
                 {
-                    return i + 1; // Indexes start at 0, so we gotta pump up those numbers.
+                    return i + 1; 
                 }
             }
             return 0;

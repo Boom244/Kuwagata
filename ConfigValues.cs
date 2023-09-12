@@ -26,8 +26,7 @@ namespace Kuwagata
                 File.Create("Kuwagata.ini");
             }
 
-            //Okay, I don't like this, especially not in the constructor.
-            //I'm going to either move this to another file or do it another way. Eventually.
+            //Init
 
             DefaultData = new IniData();
 
