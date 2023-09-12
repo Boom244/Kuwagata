@@ -11,8 +11,6 @@ File Output
 
 # Backburner (soon-to-be-implemented features):
 
-Kuwagata Video Camera
+Kuwagata Video Camera (for use with stream composition programs such as OBS, vMix, xSplit, Adobe Flash Media Live Encoder)
 
-Output to JSON, Web Server, Morse Code (?)
-
-Associated OBS Plugin?
+Output to JSON, Web Server, Net locations?
