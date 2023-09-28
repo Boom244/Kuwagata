@@ -104,13 +104,25 @@ namespace Kuwagata
         }
 
         //DRY concerns
-        public List<int> SplitCommaSeparatedVerses(List<int> returnList, string[] elements)
-        {            
-            string[] subelements = elements[1].Split(',');
-
-            string[] originalReference = subelements[0].Split(' ');
-            string book = elements[0];
-            string chapter = originalReference[0].Split(':')[0];
+        public List<int> SplitCommaSeparatedVerses(List<int> returnList, string[] elements, bool multiWordBook)
+        {
+            string[] subelements;
+            string book, chapter;
+            /* Concerned about use of if statement as opposed to ternary operators?
+             * https://stackoverflow.com/questions/17328641/ternary-operator-is-twice-as-slow-as-an-if-else-block
+             * Granted, later versions of NET have closed the gap from ~80ms to 40-50ms, but optimization is a must.
+             */
+            if (multiWordBook)
+            {
+                subelements = elements[2].Split(',');
+                book = $"{elements[0]} {elements[1]}";
+            }
+            else
+            {
+                subelements = elements[1].Split(',');
+                book = elements[0];
+            }
+            chapter = subelements[0].Split(':')[0];
 
             foreach (string subelement in subelements) //now we loop through
             {
@@ -162,14 +174,6 @@ namespace Kuwagata
                     //First, split the resulting string further by its spaces to get the book and chapter/verses. 
                     elements = requests[i].Split(' ');
 
-                //New clause; Sometimes you might want to reference a bunch of new verses within the same book, a la, for example,
-                //"Jonah 1:3-4,14,17,2:1". So, here's what we're gonna do:
-                if (elements.Length > 1 && elements[1].Contains(","))
-                {
-                    returnList = SplitCommaSeparatedVerses(returnList, elements);
-                    continue;
-                }
-
                 //Second, turn the first element of *that* resulting string into a number using BibleIndexes' GetBibleIndexFromArray.
 
                 returnNumber = BI.GetBibleIndexFromArray(elements[0]) * 1000000; //x1000000 because that's the scheme the JSON uses.
@@ -179,6 +183,17 @@ namespace Kuwagata
                 {
                     returnNumber = BI.GetBibleIndexFromArray(elements[0] + " " + elements[1]) * 1000000;
                     multiWordBook = true; //flag the next subscript to shift down one element
+                }
+
+                //New clause; Sometimes you might want to reference a bunch of new verses within the same book, a la, for example,
+                //"Jonah 1:3-4,14,17,2:1". So, here's what we're gonna do:
+                if (elements.Length > (multiWordBook ? 2 : 1))
+                {
+                    if (elements[multiWordBook ? 2 : 1].Contains(","))
+                    {
+                        returnList = SplitCommaSeparatedVerses(returnList, elements, multiWordBook);
+                        continue;
+                    }
                 }
 
                 //If we are simply referencing an entire book

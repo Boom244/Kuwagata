@@ -3,10 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Windows.Forms;
 /*In the interest of knowing what I'm doing when I come back to this project after a break of any length,
-* I have decided to litter this entire solution with extremely specific comments.
-* 
-* Also, side note: Having the forms directly reference Program.cs for the vital functions of the program is probably
-* not a good thing. Revisit later.
+* I have decided to add comments that accurately describe the control flow of this program.
 */
 
 
