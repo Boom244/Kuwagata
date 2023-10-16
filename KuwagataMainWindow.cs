@@ -8,7 +8,9 @@ namespace Kuwagata
     {
         //Needs to be public in case someone wants to disable the GUI from inside it.
         public bool isShowingSettings = false;
+        public bool isShowingVerses = false;
         KuwagataSettings ks = new KuwagataSettings();
+       public VerseHolder vs = new VerseHolder();
         public KuwagataMainWindow()
         {
             InitializeComponent();
@@ -92,6 +94,7 @@ namespace Kuwagata
             {
                 ks.Show();
                 Program.activeForms.Add(ks);
+                
             }
 
             isShowingSettings = !isShowingSettings;
@@ -100,6 +103,21 @@ namespace Kuwagata
         private void VerseTextBox_TextChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void SelectionShow_Click(object sender, EventArgs e)
+        {
+            if (isShowingVerses)
+            {
+                vs.Hide();
+                Program.activeForms.Remove(vs);
+            }
+            else
+            {
+                vs.Show();
+                Program.activeForms.Remove(vs);
+            }
+            isShowingVerses = !isShowingVerses;
         }
     }
 }
