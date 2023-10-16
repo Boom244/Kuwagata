@@ -44,7 +44,6 @@
             this.Verse});
             this.dataGridView1.Location = new System.Drawing.Point(0, 1);
             this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.ReadOnly = true;
             this.dataGridView1.RowHeadersWidth = 51;
             this.dataGridView1.RowTemplate.Height = 24;
             this.dataGridView1.Size = new System.Drawing.Size(800, 450);
@@ -57,14 +56,12 @@
             this.Reference.HeaderText = "Reference";
             this.Reference.MinimumWidth = 6;
             this.Reference.Name = "Reference";
-            this.Reference.ReadOnly = true;
             // 
             // Verse
             // 
             this.Verse.HeaderText = "Verse";
             this.Verse.MinimumWidth = 6;
             this.Verse.Name = "Verse";
-            this.Verse.ReadOnly = true;
             // 
             // VerseHolder
             // 
@@ -75,8 +72,6 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "VerseHolder";
             this.Text = "Verses";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.VerseHolder_FormClosing);
-            this.Load += new System.EventHandler(this.VerseHolder_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
 

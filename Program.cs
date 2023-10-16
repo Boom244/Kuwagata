@@ -21,6 +21,7 @@ namespace Kuwagata
         public static List<Form> activeForms;
         public static int currentIndex;
         public static KuwagataMainWindow MainWindow;
+        public static VerseHolder verseHolder;
     
 
         [STAThread] //Program does NOT like it when you try to open file dialogs without this.
@@ -36,7 +37,7 @@ namespace Kuwagata
             //Create a list of active forms that can be hidden when I send the program to the tray
             //also the verse thingy as well
             activeForms = new List<Form>();
-            
+            verseHolder = new VerseHolder();
             //Finally, run the main window.
 
             MainWindow = new KuwagataMainWindow();
@@ -44,6 +45,9 @@ namespace Kuwagata
             Application.Run(MainWindow);
 
             activeForms.Add(MainWindow);
+            activeForms.Add(verseHolder);
+
+
 
         }
 
@@ -66,19 +70,7 @@ namespace Kuwagata
 
             File.WriteAllText(cv.VerseOutput, verses[currentIndex]);
             File.WriteAllText(cv.VersionOutput, plainVerseReferences[currentIndex] + ", " + osisReader.Version.ToUpper());
-            if (MainWindow.isShowingVerses)
-            {
-                MainWindow.vs.AssignNewCells(plainVerseReferences, verses);
-            }
 
-        }
-
-        //We won't need protection on this one because it /should/ be impossible the way it's set up to pass it an index out of bounds.
-        public static void JumpQueue(int index)
-        {
-            currentIndex = index;
-            File.WriteAllText(cv.VerseOutput, verses[currentIndex]);
-            File.WriteAllText(cv.VersionOutput, plainVerseReferences[currentIndex] + "," + osisReader.Version.ToUpper());
         }
 
         public static void TransformQueue(bool way)
@@ -99,10 +91,6 @@ namespace Kuwagata
             }
             File.WriteAllText(cv.VerseOutput, verses[currentIndex]);
             File.WriteAllText(cv.VersionOutput, plainVerseReferences[currentIndex] + "," + osisReader.Version.ToUpper());
-            if (MainWindow.isShowingVerses)
-            {
-                MainWindow.vs.HighlightRow(currentIndex);
-            }
         }
     }
 }

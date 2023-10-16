@@ -166,7 +166,6 @@ namespace Kuwagata
             this.Name = "KuwagataSettings";
             this.ShowInTaskbar = false;
             this.Text = "Kuwagata Settings";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.KuwagataSettings_FormClosing);
             this.Load += new System.EventHandler(this.KuwagataSettings_Load);
             this.ResumeLayout(false);
             this.PerformLayout();

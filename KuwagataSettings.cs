@@ -71,10 +71,6 @@ namespace Kuwagata
         {
             ShowNewFile(VerseOutputText, "Text files (*.txt*)|*.txt*");
         }
-        private void KuwagataSettings_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            e.Cancel = true;
-            Cancel_Click(null, null);
-        }
+
     }
 }
