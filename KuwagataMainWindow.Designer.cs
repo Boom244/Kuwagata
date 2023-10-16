@@ -40,6 +40,7 @@ namespace Kuwagata
             this.SeekForward = new System.Windows.Forms.Button();
             this.SeekBack = new System.Windows.Forms.Button();
             this.Settings = new System.Windows.Forms.Button();
+            this.SelectionShow = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // label1
@@ -131,11 +132,22 @@ namespace Kuwagata
             this.Settings.UseVisualStyleBackColor = true;
             this.Settings.Click += new System.EventHandler(this.Settings_Click);
             // 
+            // SelectionShow
+            // 
+            this.SelectionShow.Location = new System.Drawing.Point(12, 12);
+            this.SelectionShow.Name = "SelectionShow";
+            this.SelectionShow.Size = new System.Drawing.Size(120, 22);
+            this.SelectionShow.TabIndex = 8;
+            this.SelectionShow.Text = "Show Selection";
+            this.SelectionShow.UseVisualStyleBackColor = true;
+            this.SelectionShow.Click += new System.EventHandler(this.SelectionShow_Click);
+            // 
             // KuwagataMainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(382, 353);
+            this.Controls.Add(this.SelectionShow);
             this.Controls.Add(this.Settings);
             this.Controls.Add(this.SeekBack);
             this.Controls.Add(this.SeekForward);
@@ -168,5 +180,6 @@ namespace Kuwagata
         private System.Windows.Forms.Button SeekForward;
         private System.Windows.Forms.Button SeekBack;
         private System.Windows.Forms.Button Settings;
+        private System.Windows.Forms.Button SelectionShow;
     }
 }
