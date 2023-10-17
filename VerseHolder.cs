@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Diagnostics;
 
 namespace Kuwagata
 {
@@ -52,6 +53,26 @@ namespace Kuwagata
             this.Hide();
             Program.MainWindow.isShowingVerses = false;
             Program.activeForms.Remove(this);
+        }
+
+        private void VerseHolder_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (Program.GetForegroundWindow() != this.Handle)
+            {
+                return;
+            }
+            switch(e.KeyCode)
+            {
+                case Keys.Down:
+                case Keys.Enter:
+                    Program.TransformQueue(true,false);
+                    break;
+                case Keys.Up:
+                    Program.TransformQueue(false,false);
+                    break;
+                default:
+                    break;
+            }
         }
     }
 }

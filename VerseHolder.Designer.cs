@@ -73,10 +73,12 @@
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.Controls.Add(this.dataGridView1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.KeyPreview = true;
             this.Name = "VerseHolder";
             this.Text = "Verses";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.VerseHolder_FormClosing);
             this.Load += new System.EventHandler(this.VerseHolder_Load);
+            this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.VerseHolder_KeyUp);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
 

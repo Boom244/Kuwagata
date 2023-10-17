@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
+using System.Windows;
 
 
 namespace Kuwagata
@@ -33,9 +34,12 @@ namespace Kuwagata
                     Program.TransformQueue(true);
                     break;
                 case Keys.Enter:
-                    string Verse = VerseTextBox.Text;
-                    string Version = VersionTextBox.Text;
-                    Program.StartNewRequest(Verse, Version);
+                    if (this.Handle == Program.GetForegroundWindow())
+                    {
+                        string Verse = VerseTextBox.Text;
+                        string Version = VersionTextBox.Text;
+                        Program.StartNewRequest(Verse, Version);
+                    }  
                     break;
             }
         }
