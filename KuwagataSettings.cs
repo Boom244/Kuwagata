@@ -21,7 +21,12 @@ namespace Kuwagata
 
         private void KuwagataSettings_Load(object sender, EventArgs e)
         {
-
+            string[] secVal;
+            foreach (KeyValuePair<string,Control> kvp in UIElements)
+            {
+                secVal = kvp.Key.Split('/');
+                kvp.Value.Text = configValues.Data[secVal[0]][secVal[1]].Split(',')[1];
+            }
         }
 
         private void ApplyChanges_Click(object sender, EventArgs e)
@@ -32,7 +37,7 @@ namespace Kuwagata
             sendDictionary.Add("Output/VerseOutput", VerseOutputText.Text);
             sendDictionary.Add("Output/VersionOutput", VersionOutputText.Text);
             sendDictionary.Add("VerseConfig/DefaultLoadedVersion", DefaultBibleVersionText.Text);
-           configValues.SaveToConfig(sendDictionary);
+            configValues.SaveToConfig(sendDictionary);
             Cancel_Click(null, null);
         }
 

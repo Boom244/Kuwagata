@@ -98,6 +98,11 @@
   <ItemGroup>
     <Compile Include="BibleIndexes.cs" />
     <Compile Include="ConfigValues.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="VerseHolder.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -133,6 +138,10 @@
     </EmbeddedResource>
     <EmbeddedResource Include="KuwagataSettings.resx">
       <DependentUpon>KuwagataSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="VerseHolder.resx">
       <DependentUpon>VerseHolder.cs</DependentUpon>

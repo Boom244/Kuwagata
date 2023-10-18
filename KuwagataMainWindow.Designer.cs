@@ -41,6 +41,8 @@ namespace Kuwagata
             this.SeekBack = new System.Windows.Forms.Button();
             this.Settings = new System.Windows.Forms.Button();
             this.SelectionShow = new System.Windows.Forms.Button();
+            this.ErrorSignal = new System.Windows.Forms.PictureBox();
+            ((System.ComponentModel.ISupportInitialize)(this.ErrorSignal)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
@@ -142,11 +144,26 @@ namespace Kuwagata
             this.SelectionShow.UseVisualStyleBackColor = true;
             this.SelectionShow.Click += new System.EventHandler(this.SelectionShow_Click);
             // 
+            // ErrorSignal
+            // 
+            this.ErrorSignal.Enabled = false;
+            this.ErrorSignal.ErrorImage = null;
+            this.ErrorSignal.InitialImage = null;
+            this.ErrorSignal.Location = new System.Drawing.Point(265, 79);
+            this.ErrorSignal.Name = "ErrorSignal";
+            this.ErrorSignal.Size = new System.Drawing.Size(28, 27);
+            this.ErrorSignal.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.ErrorSignal.TabIndex = 9;
+            this.ErrorSignal.TabStop = false;
+            this.ErrorSignal.Visible = false;
+            this.ErrorSignal.MouseHover += new System.EventHandler(this.ErrorSignal_MouseHover);
+            // 
             // KuwagataMainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(382, 353);
+            this.Controls.Add(this.ErrorSignal);
             this.Controls.Add(this.SelectionShow);
             this.Controls.Add(this.Settings);
             this.Controls.Add(this.SeekBack);
@@ -163,6 +180,7 @@ namespace Kuwagata
             this.Name = "KuwagataMainWindow";
             this.Text = "Kuwagata";
             this.Load += new System.EventHandler(this.KuwagataMainWindow_Load);
+            ((System.ComponentModel.ISupportInitialize)(this.ErrorSignal)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -181,5 +199,6 @@ namespace Kuwagata
         private System.Windows.Forms.Button SeekBack;
         private System.Windows.Forms.Button Settings;
         private System.Windows.Forms.Button SelectionShow;
+        private System.Windows.Forms.PictureBox ErrorSignal;
     }
 }

@@ -60,7 +60,7 @@ namespace Kuwagata
             //If the version is different than the preload, swap over.
             if (Version != osisReader.Version)
             {
-                osisReader = new OSISReader(cv.ExecDirectory + @"\OSISBibles\" + Version.ToLower() + @"\verses.json"); ;
+                osisReader = new OSISReader(cv.ExecDirectory + @"\OSISBibles\" + Version.ToLower() + @"\verses.json");
             }
 
             //Give the user their verses.

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 using System.Windows;
-
+using System.Drawing;
 
 namespace Kuwagata
 {
@@ -10,6 +10,7 @@ namespace Kuwagata
         //Needs to be public in case someone wants to disable the GUI from inside it.
         public bool isShowingSettings = false;
         public bool isShowingVerses = false;
+        ToolTip SuggestionTip = new ToolTip();
         KuwagataSettings ks = new KuwagataSettings();
        public VerseHolder vs = new VerseHolder();
         public KuwagataMainWindow()
@@ -20,7 +21,7 @@ namespace Kuwagata
 
         private void KuwagataMainWindow_Load(object sender, EventArgs e)
         {
-
+            ErrorSignal.Image = SystemIcons.Error.ToBitmap();
         }
 
         private void KuwagataMainWindow_OnKeyUp(object sender, KeyEventArgs e)
@@ -38,7 +39,7 @@ namespace Kuwagata
                     {
                         string Verse = VerseTextBox.Text;
                         string Version = VersionTextBox.Text;
-                        Program.StartNewRequest(Verse, Version);
+                        HandleRequest(Verse, Version);
                     }  
                     break;
             }
@@ -53,7 +54,7 @@ namespace Kuwagata
         {
             string Verse = VerseTextBox.Text;
             string Version = VersionTextBox.Text;
-            Program.StartNewRequest(Verse, Version);
+            HandleRequest(Verse, Version);
         }
 
         private void SeekForward_Click(object sender, EventArgs e)
@@ -66,6 +67,18 @@ namespace Kuwagata
             Kuwagata.Program.TransformQueue(false);
         }
 
+        //This is the only place we're going to be using Program.StartNewRequest so it's better to handle error handling in-house, so to speak.
+        private void HandleRequest(string Verse, string Version)
+        {
+           try
+            {
+                Program.StartNewRequest(Verse, Version);
+                ErrorSignal.Visible = false;
+            } catch 
+            {
+                ErrorSignal.Visible = true;
+            }
+        }
         private void VerseTextBox_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Control && e.KeyCode == Keys.A)
@@ -122,6 +135,12 @@ namespace Kuwagata
                 Program.activeForms.Remove(vs);
             }
             isShowingVerses = !isShowingVerses;
+        }
+
+        private void ErrorSignal_MouseHover(object sender, EventArgs e)
+        {
+            if (!ErrorSignal.Visible) { return; }
+            SuggestionTip.SetToolTip(ErrorSignal, "Failed to retrieve verse. \n Please re-type and ensure request is formatted correctly.");
         }
     }
 }
