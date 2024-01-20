@@ -32,7 +32,7 @@ namespace Kuwagata
             cv.LoadConfigSettings();
 
             //Create an OSISReader object to give you verses from the requests you put in.
-            //osisReader = new OSISReader(cv.ExecDirectory + @"\OSISBibles\kjv\verses.json");
+      
             Kuwa.Initialize(cv.ExecDirectory + @"\OSISBibles\kjv\verses.json");
             //Create a list of active forms that can be hidden when I send the program to the tray
             //also the verse thingy as well
