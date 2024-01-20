@@ -19,6 +19,13 @@ namespace Kuwagata
             BI = new BibleIndexes();
         }
 
+       public void ChangeOSISPath(string newOSISPath)
+        {
+            OSISPath = newOSISPath;
+            Version = Directory.GetParent(newOSISPath).Name.ToString().ToUpper();
+            verses = (JObject)JsonConvert.DeserializeObject(File.ReadAllText(newOSISPath));
+        }
+
         //DRY concerns
         private int[] GetVersesBetweenMarkers(int startMarker, int endMarker, AddSelectionOptions skipOption, bool escalate)
         {

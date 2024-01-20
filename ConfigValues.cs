@@ -24,7 +24,8 @@ namespace Kuwagata
 
             if (!File.Exists("Kuwagata.ini"))
             {
-                File.Create("Kuwagata.ini");
+              var config = File.Create("Kuwagata.ini");
+                config.Close();
             }
 
             //Init
@@ -67,7 +68,7 @@ namespace Kuwagata
             {
                 Parser.WriteFile("Kuwagata.ini", DefaultData); //write the default data to it
                 Data = DefaultData; //set that to our working data
-                return; //and do not consult the file further
+                return; 
             }
             VerseOutput = Data["Output"]["VerseOutput"].Split(',')[1]; //set these values because we'll be using them
             VersionOutput = Data["Output"]["VersionOutput"].Split(',')[1];

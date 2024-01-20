@@ -162,5 +162,11 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\KuwagataDLL\KuwagataDLL.csproj">
+      <Project>{0a96bc3d-afeb-4cce-85a2-41d104f67817}</Project>
+      <Name>KuwagataDLL</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
