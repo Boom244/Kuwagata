@@ -5,7 +5,7 @@ VisualStudioVersion = 17.4.33213.308
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kuwagata", "Kuwagata.csproj", "{AB27422D-9C8B-47ED-9E2D-A1FB0C81FF0A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KuwagataDLL", "..\KuwagataDLL\KuwagataDLL.csproj", "{0A96BC3D-AFEB-4CCE-85A2-41D104F67817}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KuwagataDLL", "KuwagataDLL\KuwagataDLL.csproj", "{0A96BC3D-AFEB-4CCE-85A2-41D104F67817}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

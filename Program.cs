@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Windows;
-using System.Linq;
 using System.Windows.Forms;
 using Kuwa = KuwagataDLL.Main;
-using System.Runtime.InteropServices.WindowsRuntime;
 using System.Runtime.InteropServices;
 /*In the interest of knowing what I'm doing when I come back to this project after a break of any length,
 * I have decided to add comments that accurately describe the control flow of this program.
